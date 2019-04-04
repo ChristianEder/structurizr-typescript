@@ -1,0 +1,24 @@
+{
+  "name": "structurizr-typescript",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dummy": "node dist/dummy.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChristianEder/structurizr-typescript.git"
+  },
+  "author": "Christian Eder",
+  "bugs": {
+    "url": "https://github.com/ChristianEder/structurizr-typescript/issues"
+  },
+  "homepage": "https://github.com/ChristianEder/structurizr-typescript#readme",
+  "devDependencies": {
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.4.1"
+  }
+}
