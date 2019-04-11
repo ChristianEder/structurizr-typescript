@@ -1,5 +1,5 @@
 export enum Location{
-    Unspecified,
-    Internal,
-    External
+    Unspecified = "Unspecified",
+    Internal = "Internal",
+    External = "External"
 }

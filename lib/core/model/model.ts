@@ -13,12 +13,14 @@ export class Model {
 
     public toDto(): any {
         return {
-            people: this._people.map(p => p.toDto())
+            people: this._people.map(p => p.toDto()),
+            softwareSystems: [],
+            deploymentNodes: []
         };
     }
 
     public fromDto(dto: any) {
-       // TODO this._people = dto.people;
+        // TODO this._people = dto.people;
     }
 
     public hasRelationshipTargeting(target: Element): boolean {

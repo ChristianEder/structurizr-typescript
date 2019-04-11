@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dummy": "node dist/dummy.js"
+    "dummy": "tsc && node dist/dummy.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,12 @@
   },
   "homepage": "https://github.com/ChristianEder/structurizr-typescript#readme",
   "devDependencies": {
+    "@types/node": "^11.13.2",
     "tsc": "^1.20150623.0",
     "typescript": "^3.4.1"
+  },
+  "dependencies": {
+    "@types/crypto-js": "^3.1.43",
+    "crypto-js": "^3.1.9-1"
   }
 }
