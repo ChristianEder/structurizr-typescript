@@ -6,7 +6,6 @@ import { Relationships } from "./relationships";
 
 export abstract class Element extends ModelItem implements IEquatable<Element> {
 
-
     public static CanonicalNameSeparator = "/";
 
     public name!: string;
@@ -37,7 +36,7 @@ export abstract class Element extends ModelItem implements IEquatable<Element> {
     public abstract get parent(): Element | null;
     public abstract set parent(p: Element | null);
 
-    protected abstract get type(): string;
+    public abstract get type(): string;
 
     public equals(other: Element): boolean {
         if (!other) {

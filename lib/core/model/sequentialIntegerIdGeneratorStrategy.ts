@@ -12,8 +12,8 @@ export class SequentialIntegerIdGeneratorStrategy {
     }
 
     public generateId(item: Element | Relationship): string {
-        var idString = "" + this._id;
         this._id += 1;
+        var idString = "" + this._id;
         return idString;
     }
 }

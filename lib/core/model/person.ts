@@ -8,7 +8,8 @@ import { Relationship } from "./relationship";
 
 export class Person extends StaticStructureElement implements IEquatable<Person> {
 
-    protected get type(): string { return "Person"; }
+    public static type = "Person";
+    public get type(): string { return Person.type; }
 
     public location = Location.Unspecified;
 

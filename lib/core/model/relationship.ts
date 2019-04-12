@@ -17,13 +17,22 @@ export class Relationship extends ModelItem implements IEquatable<Relationship> 
 
 
 
-    constructor(source: Element, destination: Element, description: string, technology?: string, interactionStyle: InteractionStyle = InteractionStyle.Synchronous) {
+    constructor(source?: Element, destination?: Element, description?: string, technology?: string, interactionStyle: InteractionStyle = InteractionStyle.Synchronous) {
         super();
-        this.source = source;
-        this.sourceId = source.id;
-        this.destination = destination;
-        this.destinationId = destination.id;
-        this.description = description;
+        if (source) {
+            this.source = source;
+            this.sourceId = source.id;
+        }
+
+        if (destination) {
+            this.destination = destination;
+            this.destinationId = destination.id;
+        }
+
+        if (description) {
+            this.description = description;
+        }
+        
         this.technology = technology;
         this.interactionStlye = interactionStyle;
         if (interactionStyle == InteractionStyle.Synchronous) {

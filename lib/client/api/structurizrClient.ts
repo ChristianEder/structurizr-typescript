@@ -5,33 +5,59 @@ import { HttpClient } from "./httpClient";
 export class StructurizrClient {
 
     private httpClient!: HttpClient;
+    public mergeFromRemote = true;
 
     constructor(private apiKey: string, private apiSecret: string, private url = "api.structurizr.com") {
         this.httpClient = new HttpClient(url);
     }
 
-    public putWorkspace(workspaceId: number, workspace: Workspace): Promise<string> {
+    public getWorkspace(workspaceId: number): Promise<Workspace> {
+        var nonce = Date.now() + "";
+        var md5Digest = this.getMD5digest("");
+        var response = this.httpClient.get("/workspace/" + workspaceId, this.headers(workspaceId, "GET", md5Digest, nonce));
+        return response.done.then(j => {
+            var w = new Workspace();
+            w.fromDto(JSON.parse(j));
+            w.hydrate();
+            return w;
+        })
+    }
+
+    public async putWorkspace(workspaceId: number, workspace: Workspace): Promise<string> {
+
+        if (this.mergeFromRemote) {
+            var remoteWorkspace = await this.getWorkspace(workspaceId);
+            workspace.views.copyLayoutInformationFrom(remoteWorkspace.views);
+        }
+
         workspace.id = workspaceId;
         workspace.lastModifiedDate = new Date();
         var json = JSON.stringify(workspace.toDto());
 
-        console.log("#### WORKSPACE")
         console.log(json);
-        console.log("#### /WORKSPACE")
-        
-        var nonce = Date.now() + ""; 
+
+        var nonce = Date.now() + "";
         var md5Digest = this.getMD5digest(json);
-        return this.httpClient.put("/workspace/" + workspaceId, json, {
-            "X-Authorization": this.getAuthorizationHeader("PUT", workspaceId, json, md5Digest, nonce),
-            "User-Agent": "structurizr-dotnet/0.9.0",
-            "Nonce": nonce,
-            "Content-Type": "application/json; charset=UTF-8",
-            "Content-MD5": this.toBase64EncodedUTF8(md5Digest)
-        }).done;
+        return this.httpClient.put("/workspace/" + workspaceId, json, this.headers(workspaceId, "PUT", md5Digest, nonce, json)).done;
     }
 
-    private getAuthorizationHeader(method: "PUT" | "GET", workspaceId: number, json: string, md5Digest: string, nonce: string) {
-        var hmac = this.gethmac(method, "/workspace/" + workspaceId, md5Digest, "application/json; charset=UTF-8", nonce);
+    private headers(workspaceId: number, method: "GET" | "PUT", md5Digest: string, nonce: string, json?: string): any {
+        var headers: any = {
+            "X-Authorization": this.getAuthorizationHeader(method, workspaceId, md5Digest, nonce, json),
+            "User-Agent": "structurizr-dotnet/0.9.0",
+            "Nonce": nonce
+        };
+
+        if (json) {
+            headers["Content-Type"] = "application/json; charset=UTF-8";
+            headers["Content-MD5"] = this.toBase64EncodedUTF8(md5Digest);
+        }
+
+        return headers;
+    }
+
+    private getAuthorizationHeader(method: "PUT" | "GET", workspaceId: number, md5Digest: string, nonce: string, json?: string, ) {
+        var hmac = this.gethmac(method, "/workspace/" + workspaceId, md5Digest, json ? "application/json; charset=UTF-8" : "", nonce);
         var authHeader = this.apiKey + ":" + this.toBase64EncodedUTF8(hmac);
         return authHeader;
     }
@@ -46,7 +72,6 @@ export class StructurizrClient {
     }
 
     private getMD5digest(content: string) {
-        var bytes = CryptoJS.enc.Utf8.parse(content).toString(CryptoJS.enc.Base64);
         var md5 = CryptoJS.MD5(content).toString(CryptoJS.enc.Base64);
         var digest = CryptoJS.enc.Base64.parse(md5).toString();
         return digest;

@@ -11,7 +11,6 @@ export class HttpClient {
     }
 
     public put(path: string, content: {}, additionalHeaders?: {}): HttpResponse {
-        console.log(JSON.stringify(additionalHeaders));
         return new HttpResponse(this.getRequestOptions(path, "PUT", additionalHeaders), content);
     }
 

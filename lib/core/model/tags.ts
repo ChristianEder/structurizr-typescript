@@ -7,6 +7,7 @@ export class Tags {
     public static Relationship = "Relationship";
     public static Element = "Element";
     public static Person = "Person";
+    public static SoftwareSystem = "Software System";
 
     private _all: string[] = [];
 

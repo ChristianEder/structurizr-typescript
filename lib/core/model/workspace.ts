@@ -1,4 +1,5 @@
 import { Model } from "./model";
+import { ViewSet } from "../view/viewSet";
 
 export abstract class AbstractWorkspace {
     public id!: number;
@@ -21,25 +22,7 @@ export abstract class AbstractWorkspace {
             },
             configuration: {
                 users: []
-            },
-            views: {
-                systemLandscapeViews: [],
-                systemContextViews: [],
-                containerViews: [],
-                componentViews: [],
-                dynamicViews: [],
-                deploymentViews: [],
-                filteredViews: [],
-                configuration: {
-                    styles: {
-                        relationships: [],
-                        elements: []
-                    },
-                    branding: {},
-                    terminology: {},
-                    viewSortOrder: "Default"
-                }
-            }            
+            }
         };
     }
 
@@ -54,16 +37,24 @@ export abstract class AbstractWorkspace {
 
 export class Workspace extends AbstractWorkspace {
     public model: Model = new Model();
+    public views: ViewSet = new ViewSet(this.model);
 
     public toDto(): any {
         var dto = super.toDto();
         dto.model = this.model.toDto();
+        dto.views = this.views.toDto();
         return dto;
     }
 
     public fromDto(dto: any) {
         super.fromDto(dto);
-        this.model.fromDto(dto);
+        this.model.fromDto(dto.model);
+        this.views.fromDto(dto.views);
+    }
+
+    public hydrate(): void {
+        this.model.hydrate();
+        this.views.hydrate();
     }
 
 }

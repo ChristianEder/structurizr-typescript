@@ -39,8 +39,14 @@ export class Relationships {
         return this._all.map(r => r.toDto());
     }
 
-    public fromDto(dto: any) {
-        // TODO: find out how to deserialize relationships
+    public fromDto(dto: any[]) {
+        this._all = dto
+            ? dto.map((relationshipDto: any) => {
+                var r = new Relationship();
+                r.fromDto(relationshipDto);
+                return r;
+            })
+            : [];
     }
 
     public forEach(callback: (r: Relationship) => void) {
