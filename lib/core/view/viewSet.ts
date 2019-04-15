@@ -2,10 +2,12 @@ import { Model } from "../model/model";
 import { SystemContextView } from "./systemContextView";
 import { SoftwareSystem } from "../model/softwareSystem";
 import { View } from "./view";
+import { ContainerView } from "./containerView";
 
 export class ViewSet {
 
     private systemContextViews: SystemContextView[] = [];
+    private containerViews: ContainerView[] = [];
 
     constructor(public model: Model) {
     }
@@ -16,12 +18,19 @@ export class ViewSet {
         this.systemContextViews.push(view);
         return view;
     }
+    
+    public createContainerView(softwareSystem: SoftwareSystem, key: string, description: string): ContainerView {
+        this.assertThatTheViewKeyIsUnique(key);
+        var view = new ContainerView(softwareSystem, key, description);
+        this.containerViews.push(view);
+        return view;
+    }
 
     public toDto(): any {
         return {
             systemLandscapeViews: [],
             systemContextViews: this.systemContextViews.map(v => v.toDto()),
-            containerViews: [],
+            containerViews: this.containerViews.map(v => v.toDto()),
             componentViews: [],
             dynamicViews: [],
             deploymentViews: [],
@@ -39,15 +48,16 @@ export class ViewSet {
     }
 
     public fromDto(dto: any): void {
-        this.systemContextViews = dto.systemContextViews.map((viewDto: any) => {
-            var view = new SystemContextView();
-            view.fromDto(viewDto);
-            return view;
-        });
+        this.systemContextViews = this.viewsFromDto(dto.systemContextViews, () => new SystemContextView());
+        this.containerViews = this.viewsFromDto(dto.containerViews, () => new ContainerView());
     }
 
     public hydrate(): void {
         this.systemContextViews.forEach(v => {
+            v.softwareSystem = this.model.softwareSystems.find(s => s.id == v.softwareSystemId)!;
+            this.hydrateView(v);
+        });
+        this.containerViews.forEach(v => {
             v.softwareSystem = this.model.softwareSystems.find(s => s.id == v.softwareSystemId)!;
             this.hydrateView(v);
         });
@@ -60,6 +70,12 @@ export class ViewSet {
                 v.copyLayoutInformationFrom(s);
             }
         });
+        this.containerViews.forEach(v => {
+            var s = source.findContainerView(v.key);
+            if (s) {
+                v.copyLayoutInformationFrom(s);
+            }
+        });
     }
 
     public getViewWithKey(key: string): View | undefined {
@@ -67,7 +83,7 @@ export class ViewSet {
             throw "A key must be specified.";
         }
 
-        return this.systemContextViews.find(v => v.key == key);
+        return this.systemContextViews.find(v => v.key == key) || this.containerViews.find(v => v.key == key);
     }
 
     private assertThatTheViewKeyIsUnique(key: string): void {
@@ -80,12 +96,28 @@ export class ViewSet {
         return this.systemContextViews.find(v => v.key == key);
     }
 
+    private findContainerView(key: string): ContainerView | undefined {
+        return this.containerViews.find(v => v.key == key);
+    }
+
     private hydrateView(view: View): void {
         view.elements.forEach(e => {
             e.element = this.model.getElement(e.id);
         });
         view.relationships.forEach(r => {
             r.relationship = this.model.getRelationship(r.id)!;
+        });
+    }
+
+    private viewsFromDto<TView extends View>(viewDtos: any[], ctor: () => TView): TView[] {
+        if(!viewDtos){
+            return [];
+        }
+
+        return viewDtos.map((viewDto: any) => {
+            var view = ctor();
+            view.fromDto(viewDto);
+            return view;
         });
     }
 }

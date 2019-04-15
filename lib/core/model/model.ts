@@ -5,6 +5,7 @@ import { SequentialIntegerIdGeneratorStrategy } from "./sequentialIntegerIdGener
 import { Location } from "./location";
 import { Person } from "./person";
 import { SoftwareSystem } from "./softwareSystem";
+import { Container } from "./container";
 
 export class Model {
     public relationships: Relationship[] = [];
@@ -36,10 +37,16 @@ export class Model {
 
     public hydrate(): void {
         this.people.forEach(p => this.addElementToInternalStructures(p));
-        this.softwareSystems.forEach(s => this.addElementToInternalStructures(s));
+        this.softwareSystems.forEach(s => {
+            this.addElementToInternalStructures(s);
+            s.containers.forEach(c => this.addElementToInternalStructures(c));
+        });
 
         this.people.forEach(p => this.hydrateRelationships(p));
-        this.softwareSystems.forEach(s => this.hydrateRelationships(s));
+        this.softwareSystems.forEach(s => {
+            this.hydrateRelationships(s);
+            s.containers.forEach(c => this.hydrateRelationships(c));
+        });
     }
 
     public hasRelationshipTargeting(target: Element): boolean {
@@ -89,6 +96,22 @@ export class Model {
         softwareSystem.id = this._idGenerator.generateId(softwareSystem);
         this.addElementToInternalStructures(softwareSystem);
         return softwareSystem;
+    }
+
+    public addContainer(parent: SoftwareSystem, name: string, description: string, technology: string): Container | null {
+        if (parent.containers.some(c => c.name == name)) {
+            return null;
+        }
+
+        var container = new Container();
+        container.name = name;
+        container.description = description;
+        container.technology = technology;
+        container.parent = parent;
+        parent.containers.push(container);
+        container.id = this._idGenerator.generateId(container);
+        this.addElementToInternalStructures(container);
+        return container;
     }
 
     public getElement(id: string): Element {
