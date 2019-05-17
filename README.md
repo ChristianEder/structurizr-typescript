@@ -1,5 +1,7 @@
 # Structurizr for TypeScript
 
+[![npm version](https://badge.fury.io/js/structurizr-typescript.svg)](https://badge.fury.io/js/structurizr-typescript)
+
 This GitHub repository is a port of [Structurizr for .NET](https://github.com/structurizr/dotnet) to TypeScript, in order to help you visualise, document and explore the software architecture of a software system. In summary, it allows you to create a software architecture model based upon Simon Brown's [C4 model](https://structurizr.com/help/c4).
 
 ## How to use
