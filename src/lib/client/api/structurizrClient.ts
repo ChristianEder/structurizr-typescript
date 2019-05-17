@@ -44,7 +44,7 @@ export class StructurizrClient {
     private headers(workspaceId: number, method: "GET" | "PUT", md5Digest: string, nonce: string, json?: string): any {
         var headers: any = {
             "X-Authorization": this.getAuthorizationHeader(method, workspaceId, md5Digest, nonce, json),
-            "User-Agent": "structurizr-dotnet/0.9.0",
+            "User-Agent": "structurizr-typescript/0.0.3",
             "Nonce": nonce
         };
 
