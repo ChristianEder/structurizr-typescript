@@ -1,7 +1,5 @@
-import { Workspace } from "./core/model/workspace";
-import { StructurizrClient } from "./client/api/structurizrClient";
-import { InteractionStyle } from "./core/model/interactionStyle";
-import { Location } from "./core/model/location";
+import { Workspace, Location, InteractionStyle, StructurizrClient } from "structurizr-typescript"
+
 
 var workspace = new Workspace();
 workspace.name = "Monkey Factory";
@@ -35,8 +33,9 @@ var containerView = workspace.views.createContainerView(factory, "factory-contai
 containerView.addAllContainers();
 containerView.addNearestNeighbours(factory);
 
+var yourWorkspaceId = 324324;
 var client = new StructurizrClient("<your api key>", "<your api secret>");
-client.putWorkspace(324234, workspace).then((c) => {
+client.putWorkspace(yourWorkspaceId, workspace).then((c) => {
     console.log("done", c);
 }).catch(e => {
     console.log("error", e);
