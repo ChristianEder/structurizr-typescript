@@ -35,7 +35,7 @@ var containerView = workspace.views.createContainerView(factory, "factory-contai
 containerView.addAllContainers();
 containerView.addNearestNeighbours(factory);
 
-var client = new StructurizrClient("your-api-key", "your-api-secret");
+var client = new StructurizrClient("a2b0e864-e698-43b5-b677-3246b4602f60", "d0198ab0-1159-4cd8-b204-fc74b1d58c0d");
 client.putWorkspace(18991, workspace).then((c) => {
     console.log("done", c);
 }).catch(e => {
