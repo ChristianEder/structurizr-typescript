@@ -9,13 +9,15 @@ export abstract class View {
     public key!: string;
     public description!: string;
     public title!: string;
-    public softwareSystemId!: string;
-    public softwareSystem!: SoftwareSystem;
+    public softwareSystemId?: string;
+    public softwareSystem?: SoftwareSystem;
     public elements: ElementView[] = [];
     public relationships: RelationshipView[] = [];
 
     public get model(): Model {
         return this.softwareSystem!.model;
+    }
+    public set model(m: Model) {
     }
 
     public abstract get name(): string;
@@ -23,7 +25,7 @@ export abstract class View {
     constructor(softwareSystem?: SoftwareSystem, key?: string, description?: string) {
         if (softwareSystem) {
             this.softwareSystem = softwareSystem;
-            this.softwareSystemId = softwareSystem.id;
+            this.softwareSystemId = softwareSystem ? softwareSystem.id : undefined;
             this.key = key!;
             this.description = description!;
         }
@@ -45,12 +47,12 @@ export abstract class View {
         this.description = dto.description;
         this.softwareSystemId = dto.softwareSystemId;
         this.title = dto.title;
-        this.elements = dto.elements.map((elementDto:any) => { 
+        this.elements = dto.elements.map((elementDto: any) => {
             var e = new ElementView();
             e.fromDto(elementDto);
             return e;
         });
-        this.relationships = dto.relationships.map((relationshipDto:any) => { 
+        this.relationships = dto.relationships.map((relationshipDto: any) => {
             var r = new RelationshipView();
             r.fromDto(relationshipDto);
             return r;

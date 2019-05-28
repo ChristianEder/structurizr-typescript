@@ -3,11 +3,13 @@ import { SystemContextView } from "./systemContextView";
 import { SoftwareSystem } from "../model/softwareSystem";
 import { View } from "./view";
 import { ContainerView } from "./containerView";
+import { DeploymentView } from "./deploymentView";
 
 export class ViewSet {
 
     private systemContextViews: SystemContextView[] = [];
     private containerViews: ContainerView[] = [];
+    private deploymentViews: DeploymentView[] = [];
 
     constructor(public model: Model) {
     }
@@ -18,11 +20,19 @@ export class ViewSet {
         this.systemContextViews.push(view);
         return view;
     }
-    
+
     public createContainerView(softwareSystem: SoftwareSystem, key: string, description: string): ContainerView {
         this.assertThatTheViewKeyIsUnique(key);
         var view = new ContainerView(softwareSystem, key, description);
         this.containerViews.push(view);
+        return view;
+    }
+
+    public createDeploymentView(key: string, description: string, softwareSystem?: SoftwareSystem): DeploymentView {
+        this.assertThatTheViewKeyIsUnique(key);
+        var view = new DeploymentView(softwareSystem, key, description);
+        view.model = this.model;
+        this.deploymentViews.push(view);
         return view;
     }
 
@@ -33,7 +43,7 @@ export class ViewSet {
             containerViews: this.containerViews.map(v => v.toDto()),
             componentViews: [],
             dynamicViews: [],
-            deploymentViews: [],
+            deploymentViews: this.deploymentViews.map(v => v.toDto()),
             filteredViews: [],
             configuration: {
                 styles: {
@@ -50,6 +60,7 @@ export class ViewSet {
     public fromDto(dto: any): void {
         this.systemContextViews = this.viewsFromDto(dto.systemContextViews, () => new SystemContextView());
         this.containerViews = this.viewsFromDto(dto.containerViews, () => new ContainerView());
+        this.deploymentViews = this.viewsFromDto(dto.deploymentViews, () => new DeploymentView());
     }
 
     public hydrate(): void {
@@ -61,17 +72,30 @@ export class ViewSet {
             v.softwareSystem = this.model.softwareSystems.find(s => s.id == v.softwareSystemId)!;
             this.hydrateView(v);
         });
+        this.deploymentViews.forEach(v => {
+            if (v.softwareSystemId) {
+                v.softwareSystem = this.model.softwareSystems.find(s => s.id == v.softwareSystemId)!;
+            }
+            v.model = this.model;
+            this.hydrateView(v);
+        });
     }
 
     public copyLayoutInformationFrom(source: ViewSet) {
         this.systemContextViews.forEach(v => {
-            var s = source.findSystemContextView(v.key);
+            var s = ViewSet.findView(v.key, source.systemContextViews);
             if (s) {
                 v.copyLayoutInformationFrom(s);
             }
         });
         this.containerViews.forEach(v => {
-            var s = source.findContainerView(v.key);
+            var s = ViewSet.findView(v.key, source.containerViews);
+            if (s) {
+                v.copyLayoutInformationFrom(s);
+            }
+        });
+        this.deploymentViews.forEach(v => {
+            var s = ViewSet.findView(v.key, source.deploymentViews);
             if (s) {
                 v.copyLayoutInformationFrom(s);
             }
@@ -92,12 +116,8 @@ export class ViewSet {
         }
     }
 
-    private findSystemContextView(key: string): SystemContextView | undefined {
-        return this.systemContextViews.find(v => v.key == key);
-    }
-
-    private findContainerView(key: string): ContainerView | undefined {
-        return this.containerViews.find(v => v.key == key);
+    private static findView<TView extends View>(key: string, views: TView[]): TView | undefined {
+        return views.find(v => v.key == key);
     }
 
     private hydrateView(view: View): void {
@@ -110,7 +130,7 @@ export class ViewSet {
     }
 
     private viewsFromDto<TView extends View>(viewDtos: any[], ctor: () => TView): TView[] {
-        if(!viewDtos){
+        if (!viewDtos) {
             return [];
         }
 

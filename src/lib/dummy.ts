@@ -25,8 +25,17 @@ crm.location = Location.External;
 factory.uses(crm, "Create tickets", "AMQP", InteractionStyle.Asynchronous);
 
 user.uses(factory, "view dashboards");
+user.uses(frontend, "view dashboards");
 admin.uses(factory, "configure users");
+admin.uses(frontend, "configure users");
 admin.uses(crm, "work on tickets");
+
+var ingressNode = workspace.model.addDeploymentNode("IoT Hub", "Ingress", "Azure IoT Hub", null, "DEV", 2)!;
+ingressNode.add(ingress);
+
+var storageNode = workspace.model.addDeploymentNode("Storage", "Storage", "Azure Storage Account with web hosting enabled", null, "DEV", 1)!;
+storageNode.add(storage);
+storageNode.add(frontend);;
 
 var systemContext = workspace.views.createSystemContextView(factory, "factory-context", "The system context view for the monkey factory");
 systemContext.addNearestNeighbours(factory);
@@ -34,6 +43,9 @@ systemContext.addNearestNeighbours(factory);
 var containerView = workspace.views.createContainerView(factory, "factory-containers", "Container view for the monkey factory");
 containerView.addAllContainers();
 containerView.addNearestNeighbours(factory);
+
+var deploymentView = workspace.views.createDeploymentView("factory-deployment", "The deployment view fo the monkey factory", factory);
+deploymentView.addAllDeploymentNodes();
 
 var client = new StructurizrClient("<your api key>", "<your api secret>");
 client.putWorkspace(324234, workspace).then((c) => {

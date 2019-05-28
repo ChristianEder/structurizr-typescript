@@ -7,7 +7,7 @@ import { Element } from "../model/element";
 export class ContainerView extends StaticView {
 
     public get name(): string {
-        return this.softwareSystem.name + " - Containers";
+        return this.softwareSystem!.name + " - Containers";
     }
 
     constructor(softwareSystem?: SoftwareSystem, key?: string, description?: string) {
@@ -21,12 +21,20 @@ export class ContainerView extends StaticView {
     }
 
     public addAllContainers(): void {
-        this.softwareSystem.containers.forEach(c => this.addElement(c, true));
+        this.softwareSystem!.containers.forEach(c => this.addElement(c, true));
     }
 
     public addNearestNeighbours(element: Element): void {
         this.addNearestNeighboursOfType(element, Person.type);
         this.addNearestNeighboursOfType(element, SoftwareSystem.type);
         this.addNearestNeighboursOfType(element, Container.type);
+    }
+
+    protected addElement(element: Element, addRelationships: boolean): void {
+        if (element === this.softwareSystem) {
+            return;
+        }
+
+        super.addElement(element, addRelationships);
     }
 }

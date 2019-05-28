@@ -6,33 +6,49 @@ import { Location } from "./location";
 import { Person } from "./person";
 import { SoftwareSystem } from "./softwareSystem";
 import { Container } from "./container";
+import { DeploymentNode } from "./deploymentNode";
+import { ContainerInstance } from "./containerInstance";
+import { notDeepEqual } from "assert";
 
 export class Model {
     public relationships: Relationship[] = [];
     private _idGenerator = new SequentialIntegerIdGeneratorStrategy();
     public people: Person[] = [];
     public softwareSystems: SoftwareSystem[] = [];
+    public containerInstances: ContainerInstance[] = [];
+    public deploymentNodes: DeploymentNode[] = [];
     private _elementsById: { [id: string]: Element } = {};
 
     public toDto(): any {
         return {
             people: this.people.map(p => p.toDto()),
             softwareSystems: this.softwareSystems.map(s => s.toDto()),
-            deploymentNodes: []
+            deploymentNodes: this.deploymentNodes.map(d => d.toDto())
         };
     }
 
     public fromDto(dto: any) {
-        this.people = dto.people.map((personDto: any) => {
-            var p = new Person();
-            p.fromDto(personDto);
-            return p;
-        });
-        this.softwareSystems = dto.softwareSystems.map((softwareSystemDto: any) => {
-            var s = new SoftwareSystem();
-            s.fromDto(softwareSystemDto);
-            return s;
-        });
+        if (dto.people) {
+            this.people = dto.people.map((personDto: any) => {
+                var p = new Person();
+                p.fromDto(personDto);
+                return p;
+            });
+        }
+        if (dto.softwareSystems) {
+            this.softwareSystems = dto.softwareSystems.map((softwareSystemDto: any) => {
+                var s = new SoftwareSystem();
+                s.fromDto(softwareSystemDto);
+                return s;
+            });
+        }
+        if (dto.deploymentNodes) {
+            this.deploymentNodes = dto.deploymentNodes.map((deploymentNodeDto: any) => {
+                var d = new DeploymentNode();
+                d.fromDto(deploymentNodeDto);
+                return d;
+            });
+        }
     }
 
     public hydrate(): void {
@@ -42,11 +58,16 @@ export class Model {
             s.containers.forEach(c => this.addElementToInternalStructures(c));
         });
 
+        this.deploymentNodes.forEach(n => this.hydrateDeploymentNode(n, null));
+
+
         this.people.forEach(p => this.hydrateRelationships(p));
         this.softwareSystems.forEach(s => {
             this.hydrateRelationships(s);
             s.containers.forEach(c => this.hydrateRelationships(c));
         });
+
+        this.deploymentNodes.forEach(n => this.hydrateDeploymentNodeRelationships(n));
     }
 
     public hasRelationshipTargeting(target: Element): boolean {
@@ -114,6 +135,70 @@ export class Model {
         return container;
     }
 
+    public addContainerInstance(deploymentNode: DeploymentNode, container: Container): ContainerInstance {
+        var instanceNumber = this.containerInstances.filter(i => i.container!.equals(container)).length + 1;
+        var instance = new ContainerInstance();
+        instance.container = container;
+        instance.containerId = container.id;
+        instance.instanceId = instanceNumber;
+        instance.environment = deploymentNode.environment;
+        instance.id = this._idGenerator.generateId(instance);
+
+        var instancesInSameEnvironment = this.containerInstances.filter(f => f.environment === deploymentNode.environment);
+        instancesInSameEnvironment.forEach(i => {
+
+            var c = i.container!;
+            container.relationships.forEach(r => {
+                if (r.destination.equals(c)) {
+                    var newRelation = this.addRelationship(instance, i, r.description, r.technology, r.interactionStlye);
+                    if (newRelation) {
+                        newRelation.tags.clear();
+                        newRelation.linkedRelationshipId = r.id;
+                    }
+                }
+            });
+
+
+            c.relationships.forEach(r => {
+                if (r.destination.equals(container)) {
+                    var newRelation = this.addRelationship(i, instance, r.description, r.technology, r.interactionStlye);
+                    if (newRelation) {
+                        newRelation.tags.clear();
+                        newRelation.linkedRelationshipId = r.id;
+                    }
+                }
+            });
+        });
+
+        this.addElementToInternalStructures(instance);
+        this.containerInstances.push(instance);
+        return instance;
+    }
+
+    public addDeploymentNode(name: string, description: string, technology: string, parent: DeploymentNode | null = null, environment = "Default", instances = 1): DeploymentNode | null {
+    
+        var nodes = parent ? parent.children : this.deploymentNodes;
+
+        if (nodes.some(c => c.name == name && c.environment == environment)) {
+            return null;
+        }
+
+        var node = new DeploymentNode();
+        node.name = name;
+        node.description = description;
+        node.technology = technology;
+        node.environment = environment;
+        node.instances = instances;
+        node.parent = parent;
+
+        if (!parent) {
+            this.deploymentNodes.push(node);
+        }
+        node.id = this._idGenerator.generateId(node);
+        this.addElementToInternalStructures(node);
+        return node;
+    }
+
     public getElement(id: string): Element {
         return this._elementsById[id];
     }
@@ -139,6 +224,24 @@ export class Model {
             r.destination = this.getElement(r.destinationId);
             this.addRelationshipToInternalStructures(r);
         });
+    }
+
+    private hydrateDeploymentNode(deploymentNode: DeploymentNode, parent: DeploymentNode | null) {
+        deploymentNode.parent = parent;
+        this.addElementToInternalStructures(deploymentNode);
+
+        deploymentNode.children.forEach(child => this.hydrateDeploymentNode(child, deploymentNode));
+
+        deploymentNode.containerInstances.forEach(containerInstance => {
+            containerInstance.container = <Container>this._elementsById[containerInstance.containerId!];
+            this.addElementToInternalStructures(containerInstance);
+        });
+    }
+
+    private hydrateDeploymentNodeRelationships(deploymentNode: DeploymentNode) {
+        this.hydrateRelationships(deploymentNode);
+        deploymentNode.children.forEach(child => this.hydrateDeploymentNodeRelationships(child));
+        deploymentNode.containerInstances.forEach(c => this.hydrateRelationships(c));
     }
 
     private getPersonWithName(name: string): Person | null {

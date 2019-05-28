@@ -6,7 +6,7 @@ import { Person } from "../model/person";
 export class SystemContextView extends StaticView {
 
     public get name(): string {
-        return this.softwareSystem.name + " - System Context";
+        return this.softwareSystem!.name + " - System Context";
     }
 
     constructor(softwareSystem?: SoftwareSystem, key?: string, description?: string) {

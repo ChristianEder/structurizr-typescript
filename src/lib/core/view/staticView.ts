@@ -38,6 +38,7 @@ export abstract class StaticView extends View {
         if (!element) {
             return;
         }
+
         this.addElement(element, true);
 
         this.model.relationships.forEach(r => {

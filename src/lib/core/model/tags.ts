@@ -9,6 +9,7 @@ export class Tags {
     public static Person = "Person";
     public static SoftwareSystem = "Software System";
     public static Container = "Container";
+    public static ContainerInstance = "Container Instance";
 
     private _all: string[] = [];
 
@@ -27,6 +28,10 @@ export class Tags {
         return this._all.indexOf(tag) >= 0;
     }
 
+    public clear() {
+        this._all = [];
+    }
+
     public toDto(): string {
         var all = [
             ...this._all,
@@ -39,7 +44,7 @@ export class Tags {
     }
 
     public fromDto(value: string) {
-        this._all = value.split(",");
+        this._all = value ? value.split(",") : [];
     }
 
 }
