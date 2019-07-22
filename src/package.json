@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dummy": "tsc && node dist/dummy.js"
+    "test": "mocha --require ts-node/register test/index.ts"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,16 @@
   },
   "homepage": "https://github.com/ChristianEder/structurizr-typescript#readme",
   "devDependencies": {
-    "@types/node": "^11.13.2",
-    "@types/crypto-js": "^3.1.43",
-    "tsc": "^1.20150623.0",
-    "typescript": "^3.4.1"
+    "@types/node": "12.6.8",
+    "@types/crypto-js": "3.1.43",
+    "typescript": "3.5.3",
+    "mocha": "6.2.0",
+    "@types/mocha": "5.2.7",
+    "chai": "4.2.0",
+    "@types/chai": "4.1.7",
+    "ts-node": "8.3.0"
   },
   "dependencies": {
-    "crypto-js": "^3.1.9-1"
+    "crypto-js": "3.1.9-1"
   }
 }

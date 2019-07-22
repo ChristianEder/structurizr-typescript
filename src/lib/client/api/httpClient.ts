@@ -1,5 +1,4 @@
 import * as https from "https";
-import { ClientRequest } from "http";
 
 export class HttpClient {
 

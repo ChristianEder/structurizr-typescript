@@ -34,8 +34,6 @@ export class StructurizrClient {
         workspace.lastModifiedDate = new Date();
         var json = JSON.stringify(workspace.toDto());
 
-        console.log(json);
-
         var nonce = Date.now() + "";
         var md5Digest = this.getMD5digest(json);
         return this.httpClient.put("/workspace/" + workspaceId, json, this.headers(workspaceId, "PUT", md5Digest, nonce, json)).done;
