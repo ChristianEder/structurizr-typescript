@@ -1,6 +1,7 @@
 
 import { describe, it } from "mocha";
 import { testApiCompatitbility } from "./api-compatibility";
+import { testPlantUMLWriter } from "./plantUMLWriter";
 
 describe("structurizr-typescript", () => {
 
@@ -10,9 +11,7 @@ describe("structurizr-typescript", () => {
 
     describe("client", () => {
         describe("plantUML", () => {
-            it("export plant UML diagrams correctly", () => {
-
-            });
+            it("export plant UML diagrams correctly", testPlantUMLWriter);
         })
     });
 });

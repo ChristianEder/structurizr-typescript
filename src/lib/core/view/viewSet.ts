@@ -7,9 +7,9 @@ import { DeploymentView } from "./deploymentView";
 
 export class ViewSet {
 
-    private systemContextViews: SystemContextView[] = [];
-    private containerViews: ContainerView[] = [];
-    private deploymentViews: DeploymentView[] = [];
+    public systemContextViews: SystemContextView[] = [];
+    public containerViews: ContainerView[] = [];
+    public deploymentViews: DeploymentView[] = [];
 
     constructor(public model: Model) {
     }

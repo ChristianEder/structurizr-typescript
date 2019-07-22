@@ -1,5 +1,5 @@
-import { Workspace, Location, InteractionStyle, StructurizrClient } from "structurizr-typescript"
-
+import { Workspace, Location, InteractionStyle, StructurizrClient, PlantUMLWriter } from "structurizr-typescript"
+import * as fs from "fs";
 
 var workspace = new Workspace();
 workspace.name = "Monkey Factory";
@@ -33,9 +33,26 @@ var containerView = workspace.views.createContainerView(factory, "factory-contai
 containerView.addAllContainers();
 containerView.addNearestNeighbours(factory);
 
+// Now either write the workspace to the Structurizr backend...
 var yourWorkspaceId = 324324;
 var client = new StructurizrClient("<your api key>", "<your api secret>");
 client.putWorkspace(yourWorkspaceId, workspace).then((c) => {
+    console.log("done", c);
+}).catch(e => {
+    console.log("error", e);
+});
+
+// ... or render it as PlantUML
+var plantUmlExport = new Promise((resolve, reject) => {
+    const plantUML = new PlantUMLWriter().toPlantUML(workspace);
+    fs.writeFile("plant.puml", plantUML, e => {
+        if(e){
+            reject(e);
+        }
+        resolve();
+    });
+});
+plantUmlExport.then((c) => {
     console.log("done", c);
 }).catch(e => {
     console.log("error", e);

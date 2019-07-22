@@ -19,5 +19,6 @@ export * from './view/elementView';
 export * from './view/relationshipView';
 export * from './view/staticView';
 export * from './view/systemContextView';
+export * from './view/deploymentView';
 export * from './view/view';
 export * from './view/viewSet';
