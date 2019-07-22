@@ -11,10 +11,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^11.13.2",
-    "tsc": "^1.20150623.0",
     "typescript": "^3.4.1"
   },
   "dependencies": {
-    "structurizr-typescript": "0.0.2"
+    "structurizr-typescript": "0.0.5"
   }
 }
