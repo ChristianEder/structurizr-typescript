@@ -31,4 +31,4 @@ This specifically excludes:
 - Dynamic diagrams 
 - Enterprise context diagrams
 
-Also, as of now the package is not (automatically) tested yet - use at own risk :-)
+Also, as of now the package has just a few automated tests - use at own risk :-)
