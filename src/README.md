@@ -9,7 +9,6 @@ This GitHub repository is a port of [Structurizr for .NET](https://github.com/st
 - Set up a new project similar to this [sample](https://github.com/ChristianEder/structurizr-typescript/tree/master/sample)
   > npm init\
   > npm install -D @types/node\
-  > npm install -D tsc\
   > npm install -D typescript\
   > npm install -S structurizr-typescript
 - Start coding your architecture model similar to the [sample index.ts](https://github.com/ChristianEder/structurizr-typescript/blob/master/sample/index.ts)
