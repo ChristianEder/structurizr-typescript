@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { PlantUMLWriter } from "../lib";
+import { PlantUMLWriter } from "../src";
 import { createWorkspace } from "./workspace";
 
 export function testPlantUMLWriter() {

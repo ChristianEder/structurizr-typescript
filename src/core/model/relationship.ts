@@ -15,8 +15,6 @@ export class Relationship extends ModelItem implements IEquatable<Relationship> 
     public destination!: Element;
     public linkedRelationshipId?: string;
 
-
-
     constructor(source?: Element, destination?: Element, description?: string, technology?: string, interactionStyle: InteractionStyle = InteractionStyle.Synchronous) {
         super();
         if (source) {

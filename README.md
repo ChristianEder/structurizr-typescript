@@ -22,10 +22,10 @@ The current version of this package only supports:
 - Relationships between those entities 
 - System Context & Container diagrams
 - Deployment diagrams with DeploymentNode, ContainerInstance and HttpHealthCheck entities
+- Custom Element & Relationship styles
 
 This specifically excludes:
 - Component & Class entities as well as the related diagrams
-- Custom styles
 - Encrypted workspaces
 - Dynamic diagrams 
 - Enterprise context diagrams

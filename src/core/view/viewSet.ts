@@ -4,12 +4,14 @@ import { SoftwareSystem } from "../model/softwareSystem";
 import { View } from "./view";
 import { ContainerView } from "./containerView";
 import { DeploymentView } from "./deploymentView";
+import { ViewConfiguration } from "./viewConfiguration";
 
 export class ViewSet {
 
     public systemContextViews: SystemContextView[] = [];
     public containerViews: ContainerView[] = [];
     public deploymentViews: DeploymentView[] = [];
+    public configuration = new ViewConfiguration();
 
     constructor(public model: Model) {
     }
@@ -45,15 +47,7 @@ export class ViewSet {
             dynamicViews: [],
             deploymentViews: this.deploymentViews.map(v => v.toDto()),
             filteredViews: [],
-            configuration: {
-                styles: {
-                    relationships: [],
-                    elements: []
-                },
-                branding: {},
-                terminology: {},
-                viewSortOrder: "Default"
-            }
+            configuration: this.configuration.toDto()
         };
     }
 
@@ -61,6 +55,9 @@ export class ViewSet {
         this.systemContextViews = this.viewsFromDto(dto.systemContextViews, () => new SystemContextView());
         this.containerViews = this.viewsFromDto(dto.containerViews, () => new ContainerView());
         this.deploymentViews = this.viewsFromDto(dto.deploymentViews, () => new DeploymentView());
+        if (dto.configuration) {
+            this.configuration.fromDto(dto.configuration);
+        }
     }
 
     public hydrate(): void {

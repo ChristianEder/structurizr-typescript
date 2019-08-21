@@ -1,24 +1,29 @@
-import { Workspace, Location, InteractionStyle } from "../lib";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
-    var workspace = new Workspace();
+    const workspace = new Workspace();
     workspace.name = "Monkey Factory";
 
-    var user = workspace.model.addPerson("User", "uses the system")!;
+    const user = workspace.model.addPerson("User", "uses the system")!;
 
-    var admin = workspace.model.addPerson("Admin", "administers the system and manages user")!;
+    const admin = workspace.model.addPerson("Admin", "administers the system and manages user")!;
 
     admin!.interactsWith(user!, "manages rights");
 
-    var factory = workspace.model.addSoftwareSystem("Monkey Factory", "Oversees the production of stuffed monkey animals")!;
+    const factory = workspace.model.addSoftwareSystem("Monkey Factory", "Oversees the production of stuffed monkey animals")!;
     factory.location = Location.Internal;
-    var ingress = factory.addContainer("ingress", "accepts incoming telemetry data", "IoT Hub")!;
-    var storage = factory.addContainer("storage", "stores telemetry data", "Table Storage")!;
-    var frontend = factory.addContainer("frontend", "visualizes telemetry data", "React")!;
-    ingress.uses(storage, "store telemetry", "IoT Hub routing");
+  
+    const ingress = factory.addContainer("ingress", "accepts incoming telemetry data", "IoT Hub")!;
+    ingress.tags.add("queue");
+
+    const storage = factory.addContainer("storage", "stores telemetry data", "Table Storage")!;
+    storage.tags.add("database");
+
+    const frontend = factory.addContainer("frontend", "visualizes telemetry data", "React")!;
+    ingress.uses(storage, "store telemetry", "IoT Hub routing", InteractionStyle.Asynchronous);
     frontend.uses(storage, "load telemetry data", "Table Storage SDK");
 
-    var crm = workspace.model.addSoftwareSystem("CRM system", "manage tickets")!;
+    const crm = workspace.model.addSoftwareSystem("CRM system", "manage tickets")!;
     crm.location = Location.External;
     factory.uses(crm, "Create tickets", "AMQP", InteractionStyle.Asynchronous);
 
@@ -28,22 +33,39 @@ export const createWorkspace: () => Workspace = () => {
     admin.uses(frontend, "configure users");
     admin.uses(crm, "work on tickets");
 
-    var ingressNode = workspace.model.addDeploymentNode("IoT Hub", "Ingress", "Azure IoT Hub", null, "DEV", 2)!;
+    const ingressNode = workspace.model.addDeploymentNode("IoT Hub", "Ingress", "Azure IoT Hub", null, "DEV", 2)!;
     ingressNode.add(ingress);
 
-    var storageNode = workspace.model.addDeploymentNode("Storage", "Storage", "Azure Storage Account with web hosting enabled", null, "DEV", 1)!;
+    const storageNode = workspace.model.addDeploymentNode("Storage", "Storage", "Azure Storage Account with web hosting enabled", null, "DEV", 1)!;
     storageNode.add(storage);
     storageNode.add(frontend);;
 
-    var systemContext = workspace.views.createSystemContextView(factory, "factory-context", "The system context view for the monkey factory");
+    const systemContext = workspace.views.createSystemContextView(factory, "factory-context", "The system context view for the monkey factory");
     systemContext.addNearestNeighbours(factory);
 
-    var containerView = workspace.views.createContainerView(factory, "factory-containers", "Container view for the monkey factory");
+    const containerView = workspace.views.createContainerView(factory, "factory-containers", "Container view for the monkey factory");
     containerView.addAllContainers();
     containerView.addNearestNeighbours(factory);
 
-    var deploymentView = workspace.views.createDeploymentView("factory-deployment", "The deployment view fo the monkey factory", factory);
+    const deploymentView = workspace.views.createDeploymentView("factory-deployment", "The deployment view fo the monkey factory", factory);
     deploymentView.addAllDeploymentNodes();
+
+    const dbStyle = new ElementStyle("database");
+    dbStyle.shape = Shape.Cylinder;
+    
+    const queueStyle = new ElementStyle("queue");
+    queueStyle.shape = Shape.Pipe;
+    
+    const syncStyle = new RelationshipStyle(Tags.Synchronous);
+    syncStyle.dashed = false;
+    
+    const asyncStyle = new RelationshipStyle(Tags.Asynchronous);
+    asyncStyle.dashed = true;
+
+    workspace.views.configuration.styles.addElementStyle(dbStyle);
+    workspace.views.configuration.styles.addElementStyle(queueStyle);
+    workspace.views.configuration.styles.addRelationshipStyle(asyncStyle);
+    workspace.views.configuration.styles.addRelationshipStyle(syncStyle);
 
     return workspace;
 }

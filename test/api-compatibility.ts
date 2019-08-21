@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { StructurizrClient } from "../lib";
+import { StructurizrClient } from "../src";
 import { createWorkspace } from "./workspace";
 
 export async function testApiCompatitbility() {
