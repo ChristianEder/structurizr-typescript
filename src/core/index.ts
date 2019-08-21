@@ -1,5 +1,9 @@
 export * from './model/container';
+export * from './model/containerInstance';
+export * from './model/deploymentElement';
+export * from './model/deploymentNode';
 export * from './model/element';
+export * from './model/httpHealthCheck';
 export * from './model/iequatable';
 export * from './model/interactionStyle';
 export * from './model/location';
@@ -13,8 +17,8 @@ export * from './model/staticStructureElement';
 export * from './model/tags';
 export * from './model/workspace';
 
-
 export * from './view/containerView';
+export * from './view/deploymentView';
 export * from './view/elementView';
 export * from './view/relationshipView';
 export * from './view/staticView';

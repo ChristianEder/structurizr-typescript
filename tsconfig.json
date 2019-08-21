@@ -8,6 +8,7 @@
   },
   "exclude": [
     "dist",
-    "test"
+    "test",
+    "sample"
   ]
 }

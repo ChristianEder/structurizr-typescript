@@ -1,4 +1,4 @@
-src/node_modules/
-src/dist/
+node_modules/
+dist/
 sample/node_modules/
 sample/dist/
