@@ -6,7 +6,7 @@ import { testPlantUMLWriter } from "./plantUMLWriter";
 describe("structurizr-typescript", () => {
 
     describe("api", () => {
-        it("should be compatible to the server side API", testApiCompatitbility);
+        it("should be compatible to the server side API", testApiCompatitbility).timeout(15000);
     });
 
     describe("client", () => {

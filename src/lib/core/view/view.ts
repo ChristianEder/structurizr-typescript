@@ -47,12 +47,12 @@ export abstract class View {
         this.description = dto.description;
         this.softwareSystemId = dto.softwareSystemId;
         this.title = dto.title;
-        this.elements = dto.elements.map((elementDto: any) => {
+        this.elements = (dto.elements || []).map((elementDto: any) => {
             var e = new ElementView();
             e.fromDto(elementDto);
             return e;
         });
-        this.relationships = dto.relationships.map((relationshipDto: any) => {
+        this.relationships = (dto.relationships || []).map((relationshipDto: any) => {
             var r = new RelationshipView();
             r.fromDto(relationshipDto);
             return r;
