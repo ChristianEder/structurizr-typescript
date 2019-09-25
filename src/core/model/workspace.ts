@@ -1,11 +1,11 @@
-import { Model } from './model';
-import { ViewSet } from '../view/viewSet';
-import { Documentation } from '../documentation/documentation';
+import { Model } from "./model";
+import { ViewSet } from "../view/viewSet";
+import { Documentation } from "../documentation/documentation";
 
 export abstract class AbstractWorkspace {
     public id!: number;
-    public name: string = '';
-    public description: string = '';
+    public name: string = "";
+    public description: string = "";
     public lastModifiedDate!: Date;
     public version!: string;
 

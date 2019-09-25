@@ -2,42 +2,14 @@ import { Element } from "../model/element";
 import { Format } from "./format";
 import { DecisionStatus } from "./decisionStatus";
 
-export interface DecisionDto {
-    id: string;
-    date: string;
-    status: DecisionStatus;
-    title: string;
-    content: string;
-    format: Format;
-    elementId?: string;
-}
-
 export class Decision {
-    id: string;
-    date: Date;
-    status: DecisionStatus;
-    element: Element | null;
-    title: string;
-    format: Format;
-    content: string;
-
-    constructor(
-        element: Element | null,
-        id: string,
-        date: Date,
-        title: string,
-        status: DecisionStatus,
-        format: Format,
-        content: string
-    ) {
-        this.element = element;
-        this.id = id;
-        this.date = date;
-        this.title = title;
-        this.status = status;
-        this.format = format;
-        this.content = content;
-    }
+    public id?: string;
+    public date?: Date;
+    public status?: DecisionStatus;
+    public element?: Element;
+    public title?: string;
+    public format?: Format;
+    public content?: string;
 
     private _elementId?: string;
 
@@ -49,15 +21,25 @@ export class Decision {
         this._elementId = value;
     }
 
-    toDto(): DecisionDto {
+    public toDto() {
         return {
             id: this.id,
-            date: this.date.toISOString(),
+            date: this.date!.toISOString(),
             status: this.status,
             title: this.title,
             content: this.content,
             format: this.format,
             elementId: this.elementId
         };
+    }
+
+    public fromDto(dto: any) {
+        this.id = dto.id;
+        this.date = new Date(dto.date);
+        this.status = dto.status;
+        this.title = dto.title;
+        this.content = dto.content;
+        this.format = dto.format;
+        this.elementId = dto.elementId;
     }
 }
