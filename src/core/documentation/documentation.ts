@@ -118,7 +118,7 @@ export class Documentation {
             this.sections.forEach(section => {
                 if (!section.element && section.title === title) {
                     throw new Error(
-                        `A section with a title of ${title} lready exists for this workspace.`
+                        `A section with a title of ${title} already exists for this workspace.`
                     );
                 }
             });
@@ -129,7 +129,7 @@ export class Documentation {
                     section.title === title
                 ) {
                     throw new Error(
-                        `A section with a title of ${title} lready exists for element named ${element.name}.`
+                        `A section with a title of ${title} already exists for element named ${element.name}.`
                     );
                 }
             });
@@ -141,7 +141,7 @@ export class Documentation {
             this.decisions.forEach(section => {
                 if (!section.element && section.id === id) {
                     throw new Error(
-                        `A decision with an id of ${id} lready exists for this workspace.`
+                        `A decision with an id of ${id} already exists for this workspace.`
                     );
                 }
             });
@@ -149,7 +149,7 @@ export class Documentation {
             this.decisions.forEach(decision => {
                 if (element.id === decision.elementId && decision.id === id) {
                     throw new Error(
-                        `A decision with an title of ${id} lready exists for element named ${element.name}.`
+                        `A decision with an title of ${id} already exists for element named ${element.name}.`
                     );
                 }
             });
