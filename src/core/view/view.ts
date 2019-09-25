@@ -4,6 +4,8 @@ import { ElementView } from "./elementView";
 import { RelationshipView } from "./relationshipView";
 import { Element } from "../model/element";
 import { Relationship } from "../model/relationship";
+import { AutomaticLayout } from "./automaticLayout";
+import { RankDirection } from "./rankDirection";
 
 export abstract class View {
     public key!: string;
@@ -13,6 +15,7 @@ export abstract class View {
     public softwareSystem?: SoftwareSystem;
     public elements: ElementView[] = [];
     public relationships: RelationshipView[] = [];
+    public automaticLayout?: AutomaticLayout;
 
     public get model(): Model {
         return this.softwareSystem!.model;
@@ -38,7 +41,8 @@ export abstract class View {
             softwareSystemId: this.softwareSystemId,
             title: this.title,
             elements: this.elements.map(e => e.toDto()),
-            relationships: this.relationships.map(r => r.toDto())
+            relationships: this.relationships.map(r => r.toDto()),
+            automaticLayout: this.automaticLayout ? this.automaticLayout.toDto() : null
         }
     }
 
@@ -57,6 +61,10 @@ export abstract class View {
             r.fromDto(relationshipDto);
             return r;
         });
+        if (dto.automaticLayout) {
+            this.automaticLayout = new AutomaticLayout();
+            this.automaticLayout.fromDto(dto.automaticLayout);
+        }
     }
 
     public add(relationship: Relationship): RelationshipView | null {
@@ -99,6 +107,22 @@ export abstract class View {
                 target.copyLayoutInformationFrom(r);
             }
         });
+    }
+
+    public setAutomaticLayout(enable: boolean): void;
+    public setAutomaticLayout(direction: RankDirection, rankSeparation: number, nodeSeparation: number, edgeSeparation: number, vertices: boolean): void;
+    public setAutomaticLayout(directionOrEnable: RankDirection | boolean, rankSeparation?: number, nodeSeparation?: number, edgeSeparation?: number, vertices?: boolean): void {
+        if (typeof directionOrEnable === 'boolean') {
+            if (directionOrEnable) {
+                this.automaticLayout = new AutomaticLayout();
+                this.automaticLayout.fromDto({ rankDirection: RankDirection.TopBottom, rankSeparation: 300, nodeSeparation: 600, edgeSeparation: 200, vertices: false });
+            } else {
+                this.automaticLayout = undefined;
+            }
+        } else {
+            this.automaticLayout = new AutomaticLayout();
+            this.automaticLayout.fromDto({ rankDirection: directionOrEnable, rankSeparation, nodeSeparation, edgeSeparation, vertices });
+        }
     }
 
     protected addElement(element: Element, addRelationships: boolean): void {

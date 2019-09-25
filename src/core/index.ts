@@ -27,3 +27,5 @@ export * from './view/systemContextView';
 export * from './view/view';
 export * from './view/viewConfiguration';
 export * from './view/viewSet';
+export * from "./view/automaticLayout";
+export * from "./view/rankDirection";
