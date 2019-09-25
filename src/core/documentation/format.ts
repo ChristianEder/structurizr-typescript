@@ -1,4 +1,4 @@
 export enum Format {
-  Markdown = "Markdown",
-  AsciiDoc = "AsciiDoc"
+    Markdown = "Markdown",
+    AsciiDoc = "AsciiDoc"
 }
