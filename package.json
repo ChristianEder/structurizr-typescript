@@ -1,6 +1,6 @@
 {
   "name": "structurizr-typescript",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,14 +18,14 @@
   },
   "homepage": "https://github.com/ChristianEder/structurizr-typescript#readme",
   "devDependencies": {
-    "@types/node": "12.6.8",
-    "@types/crypto-js": "3.1.43",
-    "typescript": "3.5.3",
-    "mocha": "6.2.0",
-    "@types/mocha": "5.2.7",
-    "chai": "4.2.0",
     "@types/chai": "4.1.7",
-    "ts-node": "8.3.0"
+    "@types/crypto-js": "3.1.43",
+    "@types/mocha": "5.2.7",
+    "@types/node": "^12.6.8",
+    "chai": "4.2.0",
+    "mocha": "6.2.0",
+    "ts-node": "8.3.0",
+    "typescript": "3.5.3"
   },
   "dependencies": {
     "crypto-js": "3.1.9-1"
