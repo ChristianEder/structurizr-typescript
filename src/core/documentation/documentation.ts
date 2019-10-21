@@ -17,7 +17,7 @@ export class Documentation {
     }
 
     public addSection(
-        element: Element,
+        element: Element | undefined,
         title: string,
         format: any,
         content: string
@@ -35,18 +35,19 @@ export class Documentation {
 
         const section = new Section();
         section.fromDto({
-            element,
+            elementId: element && element.id,
             title,
             order: this.sections.size + 1,
             format,
             content
         });
+        section.element = element;
         this.sections.add(section);
         return section;
     }
 
     public addDecision(
-        element: SoftwareSystem,
+        element: SoftwareSystem | undefined,
         id: string,
         date: Date,
         title: string,
@@ -62,7 +63,8 @@ export class Documentation {
         this.checkDecisionIsUnqiue(id, element);
 
         const decision = new Decision();
-        decision.fromDto({ id, date, title, status, format, content });
+        decision.fromDto({ id, date, title, status, format, content, elementId: element && element.id });
+        decision.element = element;
         this.decisions.add(decision);
         return decision;
     }
@@ -138,8 +140,8 @@ export class Documentation {
 
     private checkDecisionIsUnqiue(id: string, element?: Element) {
         if (!element) {
-            this.decisions.forEach(section => {
-                if (!section.element && section.id === id) {
+            this.decisions.forEach(decision => {
+                if (!decision.element && decision.id === id) {
                     throw new Error(
                         `A decision with an id of ${id} already exists for this workspace.`
                     );

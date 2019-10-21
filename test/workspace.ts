@@ -69,9 +69,9 @@ export const createWorkspace: () => Workspace = () => {
 
     workspace.documentation.addSection(factory, "Monkey Factory", Format.Markdown, `The monkey factory oversees the production of stuffed monkey animals`);
     workspace.documentation.addSection(frontend, "Frontend", Format.AsciiDoc, `The frontend is written in javascript`);
-    workspace.documentation.addSection(null, "Unrelated", Format.AsciiDoc, `Text goes here`);
+    workspace.documentation.addSection(undefined, "Unrelated", Format.AsciiDoc, `Text goes here`);
     workspace.documentation.addDecision(factory, '1', new Date('2008-09-15T15:53:00'), 'Use ISO 8601 Format for Dates', DecisionStatus.Accepted, Format.Markdown, `We should use ISO 8601`);
-
+    workspace.documentation.addDecision(undefined, '2', new Date('2008-09-15T15:53:00'), 'Use angular as the frontend framework', DecisionStatus.Proposed, Format.Markdown, `We should use angular`);
 
     return workspace;
 }
