@@ -1,5 +1,6 @@
 import { Model } from "./model";
 import { ViewSet } from "../view/viewSet";
+import { Documentation } from "../documentation/documentation";
 
 export abstract class AbstractWorkspace {
     public id!: number;
@@ -38,11 +39,13 @@ export abstract class AbstractWorkspace {
 export class Workspace extends AbstractWorkspace {
     public model: Model = new Model();
     public views: ViewSet = new ViewSet(this.model);
+    public documentation: Documentation = new Documentation(this.model);
 
     public toDto(): any {
         var dto = super.toDto();
         dto.model = this.model.toDto();
         dto.views = this.views.toDto();
+        dto.documentation = this.documentation.toDto();
         return dto;
     }
 
@@ -50,11 +53,12 @@ export class Workspace extends AbstractWorkspace {
         super.fromDto(dto);
         this.model.fromDto(dto.model);
         this.views.fromDto(dto.views);
+        this.documentation.fromDto(dto.documentation);
     }
 
     public hydrate(): void {
         this.model.hydrate();
         this.views.hydrate();
+        this.documentation.hydrate();
     }
-
 }
