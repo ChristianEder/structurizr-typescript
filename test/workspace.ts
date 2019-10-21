@@ -1,4 +1,4 @@
-import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus } from "../src";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
     const workspace = new Workspace();
@@ -42,11 +42,13 @@ export const createWorkspace: () => Workspace = () => {
 
     const systemContext = workspace.views.createSystemContextView(factory, "factory-context", "The system context view for the monkey factory");
     systemContext.addNearestNeighbours(factory);
+    systemContext.setAutomaticLayout(true);
 
     const containerView = workspace.views.createContainerView(factory, "factory-containers", "Container view for the monkey factory");
     containerView.addAllContainers();
     containerView.addNearestNeighbours(factory);
-
+    containerView.setAutomaticLayout(RankDirection.LeftRight, 100, 200, 100, true);
+    
     const deploymentView = workspace.views.createDeploymentView("factory-deployment", "The deployment view fo the monkey factory", factory);
     deploymentView.addAllDeploymentNodes();
 
