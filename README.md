@@ -23,6 +23,8 @@ The current version of this package only supports:
 - System Context & Container diagrams
 - Deployment diagrams with DeploymentNode, ContainerInstance and HttpHealthCheck entities
 - Custom Element & Relationship styles
+- Documentation Sections & Decisions (kudos go to [Joe Ruello](https://github.com/joeruello))
+- Diagram Autolayouting (kudos go to [Joe Ruello](https://github.com/joeruello))
 
 This specifically excludes:
 - Component & Class entities as well as the related diagrams
