@@ -18,16 +18,15 @@ This GitHub repository is a port of [Structurizr for .NET](https://github.com/st
 ## Limitations
 
 The current version of this package only supports:
-- Person, SoftwareSystem & Container entities
+- Person, SoftwareSystem, Container, Component & CodeElement entities
 - Relationships between those entities 
-- System Context & Container diagrams
+- System Context, Container & Component diagrams
 - Deployment diagrams with DeploymentNode, ContainerInstance and HttpHealthCheck entities
 - Custom Element & Relationship styles
 - Documentation Sections & Decisions (kudos go to [Joe Ruello](https://github.com/joeruello))
 - Diagram Autolayouting (kudos go to [Joe Ruello](https://github.com/joeruello))
 
 This specifically excludes:
-- Component & Class entities as well as the related diagrams
 - Encrypted workspaces
 - Dynamic diagrams 
 - Enterprise context diagrams
