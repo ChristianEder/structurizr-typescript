@@ -30,6 +30,11 @@ export class ContainerView extends StaticView {
         this.addNearestNeighboursOfType(element, Container.type);
     }
 
+    public addContainer(container: Container)
+    {
+        this.addElement(container, true);
+    }
+
     protected addElement(element: Element, addRelationships: boolean): void {
         if (element === this.softwareSystem) {
             return;
