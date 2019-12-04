@@ -20,10 +20,6 @@ export class ContainerView extends StaticView {
         this.addAllContainers();
     }
 
-    public addAllContainers(): void {
-        this.softwareSystem!.containers.forEach(c => this.addElement(c, true));
-    }
-
     public addNearestNeighbours(element: Element): void {
         this.addNearestNeighboursOfType(element, Person.type);
         this.addNearestNeighboursOfType(element, SoftwareSystem.type);

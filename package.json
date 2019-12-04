@@ -1,6 +1,6 @@
 {
   "name": "structurizr-typescript",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
     "chai": "4.2.0",
     "mocha": "6.2.0",
     "ts-node": "8.3.0",
-    "typescript": "3.5.3"
+    "typescript": "3.7.3"
   },
   "dependencies": {
     "crypto-js": "3.1.9-1"

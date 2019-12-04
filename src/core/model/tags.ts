@@ -9,6 +9,7 @@ export class Tags {
     public static Person = "Person";
     public static SoftwareSystem = "Software System";
     public static Container = "Container";
+    public static Component = "Component";
     public static ContainerInstance = "Container Instance";
 
     private _all: string[] = [];

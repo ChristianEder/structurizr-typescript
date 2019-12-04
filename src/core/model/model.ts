@@ -8,7 +8,7 @@ import { SoftwareSystem } from "./softwareSystem";
 import { Container } from "./container";
 import { DeploymentNode } from "./deploymentNode";
 import { ContainerInstance } from "./containerInstance";
-import { notDeepEqual } from "assert";
+import { Component } from "./component";
 
 export class Model {
     public relationships: Relationship[] = [];
@@ -55,16 +55,23 @@ export class Model {
         this.people.forEach(p => this.addElementToInternalStructures(p));
         this.softwareSystems.forEach(s => {
             this.addElementToInternalStructures(s);
-            s.containers.forEach(c => this.addElementToInternalStructures(c));
+            s.containers.forEach(c => {
+                this.addElementToInternalStructures(c);
+                c.components.forEach(co => {
+                    this.addElementToInternalStructures(co);
+                });
+            });
         });
 
         this.deploymentNodes.forEach(n => this.hydrateDeploymentNode(n, null));
 
-
         this.people.forEach(p => this.hydrateRelationships(p));
         this.softwareSystems.forEach(s => {
             this.hydrateRelationships(s);
-            s.containers.forEach(c => this.hydrateRelationships(c));
+            s.containers.forEach(c => {
+                this.hydrateRelationships(c);
+                c.components.forEach(co => this.hydrateRelationships(co));
+            });
         });
 
         this.deploymentNodes.forEach(n => this.hydrateDeploymentNodeRelationships(n));
@@ -135,6 +142,27 @@ export class Model {
         return container;
     }
 
+    public addComponent(parent: Container, name: string, description: string, type?: string, technology?: string): Component | null {
+        if (parent.components.some(c => c.name == name)) {
+            return null;
+        }
+
+        var component = new Component();
+        component.name = name;
+        component.description = description;
+        component.technology = technology;
+        component.parent = parent;
+
+        if (type) {
+            component.primaryType = type;
+        }
+
+        parent.components.push(component);
+        component.id = this._idGenerator.generateId(component);
+        this.addElementToInternalStructures(component);
+        return component;
+    }
+
     public addContainerInstance(deploymentNode: DeploymentNode, container: Container): ContainerInstance {
         var instanceNumber = this.containerInstances.filter(i => i.container!.equals(container)).length + 1;
         var instance = new ContainerInstance();
@@ -176,7 +204,7 @@ export class Model {
     }
 
     public addDeploymentNode(name: string, description: string, technology: string, parent: DeploymentNode | null = null, environment = "Default", instances = 1): DeploymentNode | null {
-    
+
         var nodes = parent ? parent.children : this.deploymentNodes;
 
         if (nodes.some(c => c.name == name && c.environment == environment)) {
