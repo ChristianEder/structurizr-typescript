@@ -1,3 +1,5 @@
+export * from "./model/codeElement";
+export * from "./model/component";
 export * from "./model/container";
 export * from "./model/containerInstance";
 export * from "./model/deploymentElement";
@@ -18,6 +20,7 @@ export * from "./model/tags";
 export * from "./model/workspace";
 
 export * from "./view/automaticLayout";
+export * from "./view/componentView";
 export * from "./view/containerView";
 export * from "./view/deploymentView";
 export * from "./view/elementView";

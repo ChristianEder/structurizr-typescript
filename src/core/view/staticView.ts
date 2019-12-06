@@ -26,6 +26,10 @@ export abstract class StaticView extends View {
         })
     }
 
+    public addAllContainers(): void {
+        this.softwareSystem!.containers.forEach(c => this.addElement(c, true));
+    }
+
     public addSoftwareSystem(softwareSystem: SoftwareSystem) {
         this.addElement(softwareSystem, true);
     }

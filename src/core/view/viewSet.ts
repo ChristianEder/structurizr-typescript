@@ -5,11 +5,14 @@ import { View } from "./view";
 import { ContainerView } from "./containerView";
 import { DeploymentView } from "./deploymentView";
 import { ViewConfiguration } from "./viewConfiguration";
+import { ComponentView } from "./componentView";
+import { Container } from "../model/container";
 
 export class ViewSet {
 
     public systemContextViews: SystemContextView[] = [];
     public containerViews: ContainerView[] = [];
+    public componentViews: ComponentView[] = [];
     public deploymentViews: DeploymentView[] = [];
     public configuration = new ViewConfiguration();
 
@@ -30,6 +33,13 @@ export class ViewSet {
         return view;
     }
 
+    public createComponentView(container: Container, key: string, description: string): ComponentView {
+        this.assertThatTheViewKeyIsUnique(key);
+        var view = new ComponentView(container, key, description);
+        this.componentViews.push(view);
+        return view;
+    }
+
     public createDeploymentView(key: string, description: string, softwareSystem?: SoftwareSystem): DeploymentView {
         this.assertThatTheViewKeyIsUnique(key);
         var view = new DeploymentView(softwareSystem, key, description);
@@ -43,7 +53,7 @@ export class ViewSet {
             systemLandscapeViews: [],
             systemContextViews: this.systemContextViews.map(v => v.toDto()),
             containerViews: this.containerViews.map(v => v.toDto()),
-            componentViews: [],
+            componentViews: this.componentViews.map(v => v.toDto()),
             dynamicViews: [],
             deploymentViews: this.deploymentViews.map(v => v.toDto()),
             filteredViews: [],
@@ -54,6 +64,7 @@ export class ViewSet {
     public fromDto(dto: any): void {
         this.systemContextViews = this.viewsFromDto(dto.systemContextViews, () => new SystemContextView());
         this.containerViews = this.viewsFromDto(dto.containerViews, () => new ContainerView());
+        this.componentViews = this.viewsFromDto(dto.componentViews, () => new ComponentView());
         this.deploymentViews = this.viewsFromDto(dto.deploymentViews, () => new DeploymentView());
         if (dto.configuration) {
             this.configuration.fromDto(dto.configuration);
@@ -62,13 +73,21 @@ export class ViewSet {
 
     public hydrate(): void {
         this.systemContextViews.forEach(v => {
-            v.softwareSystem = this.model.softwareSystems.find(s => s.id == v.softwareSystemId)!;
+            v.softwareSystem = this.model.softwareSystems.find(s => s.id === v.softwareSystemId)!;
             this.hydrateView(v);
         });
+
         this.containerViews.forEach(v => {
-            v.softwareSystem = this.model.softwareSystems.find(s => s.id == v.softwareSystemId)!;
+            v.softwareSystem = this.model.softwareSystems.find(s => s.id === v.softwareSystemId)!;
             this.hydrateView(v);
         });
+
+        this.componentViews.forEach(v => {
+            v.softwareSystem = this.model.softwareSystems.find(s => s.id === v.softwareSystemId)!;
+            v.container = v.softwareSystem.containers.find(c => c.id === v.containerId);
+            this.hydrateView(v);
+        });
+
         this.deploymentViews.forEach(v => {
             if (v.softwareSystemId) {
                 v.softwareSystem = this.model.softwareSystems.find(s => s.id == v.softwareSystemId)!;
