@@ -33,6 +33,7 @@ export const createWorkspace: () => Workspace = () => {
     crm.location = Location.External;
     factory.uses(crm, "Create tickets", "AMQP", InteractionStyle.Asynchronous);
 
+    user.uses(dashboard, "view dashboards");
     user.uses(factory, "view dashboards");
     user.uses(frontend, "view dashboards");
     admin.uses(factory, "configure users");
