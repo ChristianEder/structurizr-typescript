@@ -16,6 +16,12 @@ export class StructurizrClient {
         var md5Digest = this.getMD5digest("");
         var response = this.httpClient.get("/workspace/" + workspaceId, this.headers(workspaceId, "GET", md5Digest, nonce));
         return response.done.then(j => {
+            
+            var dto = JSON.parse(j);
+            if(!dto || dto["success"] != undefined && !dto["success"]){
+                throw new Error("Response from API seems to indicate an error: " + j);
+            }
+
             var w = new Workspace();
             w.fromDto(JSON.parse(j));
             w.hydrate();
