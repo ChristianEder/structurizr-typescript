@@ -83,8 +83,8 @@ export class ViewSet {
         });
 
         this.componentViews.forEach(v => {
-            v.softwareSystem = this.model.softwareSystems.find(s => s.id === v.softwareSystemId)!;
-            v.container = v.softwareSystem.containers.find(c => c.id === v.containerId);
+            v.container = <Container>this.model.getElement(v.containerId!);
+            v.softwareSystem = v.container.softwareSystem!;        
             this.hydrateView(v);
         });
 

@@ -80,6 +80,7 @@ export const createWorkspace: () => Workspace = () => {
     workspace.views.configuration.styles.addElementStyle(queueStyle);
     workspace.views.configuration.styles.addRelationshipStyle(asyncStyle);
     workspace.views.configuration.styles.addRelationshipStyle(syncStyle);
+    workspace.views.configuration.theme = "https://raw.githubusercontent.com/structurizr/java/master/structurizr-examples/src/com/structurizr/example/theme/theme.json";
 
     workspace.documentation.addSection(factory, "Monkey Factory", Format.Markdown, `The monkey factory oversees the production of stuffed monkey animals`);
     workspace.documentation.addSection(frontend, "Frontend", Format.AsciiDoc, `The frontend is written in javascript`);

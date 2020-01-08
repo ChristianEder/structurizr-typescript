@@ -1,27 +1,38 @@
 import { Routing } from "./relationshipView";
 
 export enum Shape {
-    Box,
-    RoundedBox,
-    Circle,
-    Ellipse,
-    Hexagon,
-    Cylinder,
-    Pipe,
-    Person,
-    Robot,
-    Folder,
-    WebBrowser,
-    MobileDevicePortrait,
-    MobileDeviceLandscape
+    Box = "Box",
+    RoundedBox = "RoundedBox",
+    Circle = "Circle",
+    Ellipse = "Ellipse",
+    Hexagon = "Hexagon",
+    Cylinder = "Cylinder",
+    Pipe = "Pipe",
+    Person = "Person",
+    Robot = "Robot",
+    Folder = "Folder",
+    WebBrowser = "WebBrowser",
+    MobileDevicePortrait = "MobileDevicePortrait",
+    MobileDeviceLandscape = "MobileDeviceLandscape"
 }
 
 export enum Border {
-    Solid,
-    Dashed
+    Solid = "Solid",
+    Dashed = "Dashed"
 }
 
-export class RelationshipStyle {
+export interface IRelationshipStyle {
+    thickness?: number;
+    color?: string;
+    fontSize?: number;
+    width?: number;
+    dashed?: boolean;
+    routing?: Routing;
+    opacity?: number;
+    position?: number;
+}
+
+export class RelationshipStyle implements IRelationshipStyle {
 
     public thickness?: number;
     public color?: string;
@@ -47,7 +58,21 @@ export class RelationshipStyle {
     }
 }
 
-export class ElementStyle {
+export interface IElementStyle {
+    width?: number;
+    height?: number;
+    background?: string;
+    color?: string;
+    fontSize?: number;
+    shape?: Shape;
+    icon?: string;
+    border?: Border;
+    opacity?: number;
+    metadata?: boolean;
+    description?: boolean;
+}
+
+export class ElementStyle implements IElementStyle {
     public width?: number;
     public height?: number;
     public background?: string;
@@ -75,15 +100,20 @@ export class ElementStyle {
     }
 }
 
+export interface ITheme {
+    relationships: IRelationshipStyle[];
+    elements: IElementStyle[];
+}
+
 export class Styles {
     private relationships: RelationshipStyle[] = [];
     private elements: ElementStyle[] = [];
 
     public addRelationshipStyle(style: RelationshipStyle) {
         this.relationships.push(style);
-     }
+    }
 
-    public addElementStyle(style: ElementStyle) { 
+    public addElementStyle(style: ElementStyle) {
         this.elements.push(style);
     }
 
@@ -97,5 +127,12 @@ export class Styles {
     public fromDto(dto: any): void {
         this.relationships = (dto.relationships || []).map((r: any) => new RelationshipStyle(r.tag).fromDto(r))
         this.elements = (dto.elements || []).map((e: any) => new ElementStyle(e.tag).fromDto(e))
+    }
+
+    public toTheme(): ITheme {
+        return {
+            elements: this.elements,
+            relationships: this.relationships
+        };
     }
 }

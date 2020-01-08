@@ -42,7 +42,7 @@ export class Workspace extends AbstractWorkspace {
     public documentation: Documentation = new Documentation(this.model);
 
     public toDto(): any {
-        var dto = super.toDto();
+        const dto = super.toDto();
         dto.model = this.model.toDto();
         dto.views = this.views.toDto();
         dto.documentation = this.documentation.toDto();

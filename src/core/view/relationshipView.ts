@@ -1,6 +1,5 @@
 import { IEquatable } from "../model/iequatable";
 import { Relationship } from "../model/relationship";
-import { runInThisContext } from "vm";
 
 export enum Routing {
     Direct = "Direct",

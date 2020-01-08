@@ -1,13 +1,9 @@
-import { StaticStructureElement } from "./staticStructureElement";
 import { IEquatable } from "./iequatable";
-import { Component } from "./component";
-import { Element } from "./element";
-import { Tags } from "./tags";
 
 export enum CodeElementRole
 {
-    Primary,
-    Supporting
+    Primary = "Primary",
+    Supporting = "Supporting"
 }
 
 export class CodeElement implements IEquatable<CodeElement>{

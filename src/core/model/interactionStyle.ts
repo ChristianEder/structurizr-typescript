@@ -1,4 +1,4 @@
 export enum InteractionStyle {
-    Synchronous,
-    Asynchronous
+    Synchronous = "Synchronous",
+    Asynchronous = "Asynchronous"
 }
