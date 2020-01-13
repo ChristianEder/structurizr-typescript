@@ -3,7 +3,7 @@ name: npm publish
 on: [push]
 
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
