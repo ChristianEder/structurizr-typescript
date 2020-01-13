@@ -13,11 +13,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 8.11.3
-    - name: npm install, build, and test
-      run: |
-        npm ci
-        npm run build
-        npm test
+    - name: npm install
+      run: npm i
+    - name: npm test
+      run: npm t
+      env:
+        STRUCTURIZR_WORKSPACE_ID: ${{secrets.STRUCTURIZR_WORKSPACE_ID}}
+        STRUCTURIZR_API_KEY: ${{secrets.STRUCTURIZR_API_KEY}}
+        STRUCTURIZR_API_SECRET: ${{secrets.STRUCTURIZR_API_SECRET}}
     - name: publish to npmjs
       run: npm publish
       env:
