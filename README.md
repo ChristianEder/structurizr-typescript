@@ -4,6 +4,8 @@ This GitHub repository is a port of [Structurizr for .NET](https://github.com/st
 
 [![npm version](https://badge.fury.io/js/structurizr-typescript.svg)](https://www.npmjs.com/package/structurizr-typescript)
 
+[![Actions Status](https://github.com/ChristianEder/structurizr-typescript/workflows/npm%20publish/badge.svg)](https://github.com/ChristianEder/structurizr-typescript/actions)
+
 ## How to use
 
 - Set up a new project similar to this [sample](https://github.com/ChristianEder/structurizr-typescript/tree/master/sample)
