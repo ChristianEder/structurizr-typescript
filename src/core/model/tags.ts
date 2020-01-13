@@ -47,5 +47,4 @@ export class Tags {
     public fromDto(value: string) {
         this._all = value ? value.split(",") : [];
     }
-
 }

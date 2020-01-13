@@ -24,6 +24,7 @@ export * from "./view/componentView";
 export * from "./view/containerView";
 export * from "./view/deploymentView";
 export * from "./view/elementView";
+export * from "./view/filteredView";
 export * from "./view/rankDirection";
 export * from "./view/relationshipView";
 export * from "./view/staticView";

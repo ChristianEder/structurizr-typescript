@@ -24,6 +24,7 @@ The current version of this package only supports:
 - Relationships between those entities 
 - System Context, Container & Component diagrams
 - Deployment diagrams with DeploymentNode, ContainerInstance and HttpHealthCheck entities
+- Filtered Views
 - Custom Element & Relationship styles, usage & export of themes
 - Documentation Sections & Decisions (kudos go to [Joe Ruello](https://github.com/joeruello))
 - Diagram Autolayouting (kudos go to [Joe Ruello](https://github.com/joeruello))

@@ -1,8 +1,8 @@
-import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection } from "../src";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
     const workspace = new Workspace();
-    workspace.name = "Monkey Factory";
+    workspace.name = "Monkey Factory - Test";
 
     const user = workspace.model.addPerson("User", "uses the system")!;
 
@@ -60,6 +60,14 @@ export const createWorkspace: () => Workspace = () => {
     frontendComponentView.addAllComponents();
     frontendComponentView.addNearestNeighbours(frontend);
     frontendComponentView.setAutomaticLayout(true);
+
+    const completeContainerView = workspace.views.createContainerView(factory, "factory-containers-all", "Container view for the monkey factory");
+    completeContainerView.addAllContainers();
+    completeContainerView.addNearestNeighbours(factory);
+    completeContainerView.setAutomaticLayout(RankDirection.LeftRight, 100, 200, 100, true);
+
+    workspace.views.createFilteredView(completeContainerView, "databases", "Shows all databases", FilterMode.Include, "database");
+    workspace.views.createFilteredView(completeContainerView, "people", "Shows all people", FilterMode.Include, Tags.Person);
 
     const deploymentView = workspace.views.createDeploymentView("factory-deployment", "The deployment view fo the monkey factory", factory);
     deploymentView.addAllDeploymentNodes();

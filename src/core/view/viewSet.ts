@@ -7,6 +7,8 @@ import { DeploymentView } from "./deploymentView";
 import { ViewConfiguration } from "./viewConfiguration";
 import { ComponentView } from "./componentView";
 import { Container } from "../model/container";
+import { FilteredView, FilterMode } from "./filteredView";
+import { StaticView } from "./staticView";
 
 export class ViewSet {
 
@@ -14,6 +16,7 @@ export class ViewSet {
     public containerViews: ContainerView[] = [];
     public componentViews: ComponentView[] = [];
     public deploymentViews: DeploymentView[] = [];
+    public filteredViews: FilteredView[] = [];
     public configuration = new ViewConfiguration();
 
     constructor(public model: Model) {
@@ -48,6 +51,15 @@ export class ViewSet {
         return view;
     }
 
+    public createFilteredView(view: StaticView, key: string, description: string, mode: FilterMode, ...tags: string[]): FilteredView {
+        this.assertThatTheViewKeyIsUnique(key);
+
+        const filteredView = new FilteredView(view, key, description, mode, ...tags);
+        this.filteredViews.push(filteredView);
+
+        return filteredView;
+    }
+
     public toDto(): any {
         return {
             systemLandscapeViews: [],
@@ -56,7 +68,7 @@ export class ViewSet {
             componentViews: this.componentViews.map(v => v.toDto()),
             dynamicViews: [],
             deploymentViews: this.deploymentViews.map(v => v.toDto()),
-            filteredViews: [],
+            filteredViews: this.filteredViews.map(v => v.toDto()),
             configuration: this.configuration.toDto()
         };
     }
@@ -66,6 +78,7 @@ export class ViewSet {
         this.containerViews = this.viewsFromDto(dto.containerViews, () => new ContainerView());
         this.componentViews = this.viewsFromDto(dto.componentViews, () => new ComponentView());
         this.deploymentViews = this.viewsFromDto(dto.deploymentViews, () => new DeploymentView());
+        this.filteredViews = this.viewsFromDto(dto.filteredViews, () => new FilteredView())
         if (dto.configuration) {
             this.configuration.fromDto(dto.configuration);
         }
@@ -84,7 +97,7 @@ export class ViewSet {
 
         this.componentViews.forEach(v => {
             v.container = <Container>this.model.getElement(v.containerId!);
-            v.softwareSystem = v.container.softwareSystem!;        
+            v.softwareSystem = v.container.softwareSystem!;
             this.hydrateView(v);
         });
 
@@ -94,6 +107,10 @@ export class ViewSet {
             }
             v.model = this.model;
             this.hydrateView(v);
+        });
+
+        this.filteredViews.forEach(v => {
+            v.baseView = this.getViewWithKey(v.baseViewKey);
         });
     }
 
@@ -123,11 +140,14 @@ export class ViewSet {
             throw "A key must be specified.";
         }
 
-        return this.systemContextViews.find(v => v.key == key) || this.containerViews.find(v => v.key == key);
+        return this.systemContextViews.find(v => v.key == key)
+            || this.containerViews.find(v => v.key == key)
+            || this.componentViews.find(v => v.key == key)
+            || this.deploymentViews.find(v => v.key == key);
     }
 
     private assertThatTheViewKeyIsUnique(key: string): void {
-        if (this.getViewWithKey(key)) {// || this.getFilteredViewWithKey(key)) {
+        if (this.getViewWithKey(key) || this.filteredViews.some(v => v.key == key)) {
             throw "A view with the key " + key + " already exists.";
         }
     }
@@ -145,7 +165,7 @@ export class ViewSet {
         });
     }
 
-    private viewsFromDto<TView extends View>(viewDtos: any[], ctor: () => TView): TView[] {
+    private viewsFromDto<TView extends (View | FilteredView)>(viewDtos: any[], ctor: () => TView): TView[] {
         if (!viewDtos) {
             return [];
         }
