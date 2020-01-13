@@ -1,11 +1,6 @@
 name: npm publish
 
-on:
-  push:
-    branches: 
-      - master
-      - feature/**
-  
+on: [push]
 
 jobs:
   test:
@@ -25,14 +20,11 @@ jobs:
         STRUCTURIZR_WORKSPACE_ID: ${{secrets.STRUCTURIZR_WORKSPACE_ID}}
         STRUCTURIZR_API_KEY: ${{secrets.STRUCTURIZR_API_KEY}}
         STRUCTURIZR_API_SECRET: ${{secrets.STRUCTURIZR_API_SECRET}}
-  publish:
-    needs: [test]
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
     - name: npm build
+      if: github.ref == 'refs/heads/master'
       run: npm run build
     - name: publish to npmjs
+      if: github.ref == 'refs/heads/master'
       run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{secrets.npm_token}}
