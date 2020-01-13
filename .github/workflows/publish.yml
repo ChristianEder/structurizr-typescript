@@ -1,12 +1,15 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    branches: 
+      - master
+      - feature/**
+  
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js 8.11.3
@@ -22,6 +25,11 @@ jobs:
         STRUCTURIZR_WORKSPACE_ID: ${{secrets.STRUCTURIZR_WORKSPACE_ID}}
         STRUCTURIZR_API_KEY: ${{secrets.STRUCTURIZR_API_KEY}}
         STRUCTURIZR_API_SECRET: ${{secrets.STRUCTURIZR_API_SECRET}}
+  publish:
+    needs: [test]
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
     - name: npm build
       run: npm run build
     - name: publish to npmjs
