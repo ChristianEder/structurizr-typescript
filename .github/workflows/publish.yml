@@ -13,6 +13,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 8.11.3
+        registry-url: https://registry.npmjs.org/
     - name: npm install
       run: npm i
     - name: npm test
@@ -21,7 +22,9 @@ jobs:
         STRUCTURIZR_WORKSPACE_ID: ${{secrets.STRUCTURIZR_WORKSPACE_ID}}
         STRUCTURIZR_API_KEY: ${{secrets.STRUCTURIZR_API_KEY}}
         STRUCTURIZR_API_SECRET: ${{secrets.STRUCTURIZR_API_SECRET}}
+    - name: npm build
+      run: npm run build
     - name: publish to npmjs
-      run: npm publish
+      run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{secrets.npm_token}}
