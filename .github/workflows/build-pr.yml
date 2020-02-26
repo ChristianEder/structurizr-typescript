@@ -1,0 +1,18 @@
+name: build PRs
+
+on: [pull_request]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 8.11.3
+      uses: actions/setup-node@v1
+      with:
+        node-version: 8.11.3
+        registry-url: https://registry.npmjs.org/
+    - name: npm install
+      run: npm i
+    - name: npm test
+      run: npm t
