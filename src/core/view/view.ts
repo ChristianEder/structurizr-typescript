@@ -6,6 +6,7 @@ import { Element } from "../model/element";
 import { Relationship } from "../model/relationship";
 import { AutomaticLayout } from "./automaticLayout";
 import { RankDirection } from "./rankDirection";
+import { PaperSize } from "./paperSize";
 
 export abstract class View {
     public key!: string;
@@ -16,6 +17,7 @@ export abstract class View {
     public elements: ElementView[] = [];
     public relationships: RelationshipView[] = [];
     public automaticLayout?: AutomaticLayout;
+    public paperSize?: PaperSize;
 
     public get model(): Model {
         return this.softwareSystem!.model;
@@ -42,7 +44,8 @@ export abstract class View {
             title: this.title,
             elements: this.elements.map(e => e.toDto()),
             relationships: this.relationships.map(r => r.toDto()),
-            automaticLayout: this.automaticLayout ? this.automaticLayout.toDto() : null
+            automaticLayout: this.automaticLayout ? this.automaticLayout.toDto() : null,
+            paperSize: this.paperSize?.key
         }
     }
 
@@ -64,6 +67,9 @@ export abstract class View {
         if (dto.automaticLayout) {
             this.automaticLayout = new AutomaticLayout();
             this.automaticLayout.fromDto(dto.automaticLayout);
+        }
+        if(dto.paperSize){
+            this.paperSize = PaperSize.getPaperSize(dto.paperSize);
         }
     }
 
@@ -94,6 +100,10 @@ export abstract class View {
     }
 
     public copyLayoutInformationFrom(source: View) {
+        if(!this.paperSize){
+            this.paperSize = source.paperSize;
+        }
+
         source.elements.forEach(e => {
             var target = this.elements.find(t => t.element.equals(e.element));
             if (target) {

@@ -1,4 +1,4 @@
-import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode } from "../src";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
     const workspace = new Workspace();
@@ -59,7 +59,7 @@ export const createWorkspace: () => Workspace = () => {
     const frontendComponentView = workspace.views.createComponentView(frontend, "factory-frontend-components", "Component View for the monkey factory frontend");
     frontendComponentView.addAllComponents();
     frontendComponentView.addNearestNeighbours(frontend);
-    frontendComponentView.setAutomaticLayout(true);
+    frontendComponentView.paperSize = PaperSize.A3_Portrait;
 
     const completeContainerView = workspace.views.createContainerView(factory, "factory-containers-all", "Container view for the monkey factory");
     completeContainerView.addAllContainers();
