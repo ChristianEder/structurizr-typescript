@@ -20,6 +20,7 @@ export * from "./model/tags";
 export * from "./model/workspace";
 
 export * from "./view/automaticLayout";
+export * from "./view/branding";
 export * from "./view/componentView";
 export * from "./view/containerView";
 export * from "./view/deploymentView";

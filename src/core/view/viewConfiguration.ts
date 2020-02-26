@@ -1,5 +1,6 @@
 import { Styles } from "./styles";
 import { Terminology } from "./terminology";
+import { Branding } from "./branding";
 
 export class ViewConfiguration {
     public styles: Styles = new Styles();
@@ -7,11 +8,12 @@ export class ViewConfiguration {
     public theme?: string;
 
     public terminology: Terminology = {};
+    public branding: Branding = {};
 
     public toDto(): any {
         return {
             styles: this.styles.toDto(),
-            branding: {},
+            branding: this.branding,
             terminology: this.terminology,
             viewSortOrder: "Default",
             theme: this.theme
@@ -24,6 +26,9 @@ export class ViewConfiguration {
         }
         if (dto.terminology) {
             this.terminology = dto.terminology;
+        }
+        if (dto.branding) {
+            this.branding = dto.branding;
         }
         this.theme = dto.theme;
     }
