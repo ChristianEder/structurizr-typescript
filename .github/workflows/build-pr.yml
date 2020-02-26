@@ -16,3 +16,7 @@ jobs:
       run: npm i
     - name: npm test
       run: npm t
+      env:
+        STRUCTURIZR_WORKSPACE_ID: ${{secrets.STRUCTURIZR_WORKSPACE_ID}}
+        STRUCTURIZR_API_KEY: ${{secrets.STRUCTURIZR_API_KEY}}
+        STRUCTURIZR_API_SECRET: ${{secrets.STRUCTURIZR_API_SECRET}}
