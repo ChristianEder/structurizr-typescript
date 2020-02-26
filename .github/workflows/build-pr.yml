@@ -3,7 +3,7 @@ name: build PRs
 on: [pull_request]
 
 jobs:
-  publish:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
