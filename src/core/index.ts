@@ -31,6 +31,7 @@ export * from "./view/relationshipView";
 export * from "./view/staticView";
 export * from "./view/styles";
 export * from "./view/systemContextView";
+export * from "./view/terminology";
 export * from "./view/view";
 export * from "./view/viewConfiguration";
 export * from "./view/viewSet";

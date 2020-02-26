@@ -96,5 +96,7 @@ export const createWorkspace: () => Workspace = () => {
     workspace.documentation.addDecision(factory, '1', new Date('2008-09-15T15:53:00'), 'Use ISO 8601 Format for Dates', DecisionStatus.Accepted, Format.Markdown, `We should use ISO 8601`);
     workspace.documentation.addDecision(undefined, '2', new Date('2008-09-15T15:53:00'), 'Use angular as the frontend framework', DecisionStatus.Proposed, Format.Markdown, `We should use angular`);
 
+    workspace.views.configuration.terminology.person = "Actor";
+
     return workspace;
 }
