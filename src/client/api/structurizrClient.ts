@@ -46,7 +46,7 @@ export class StructurizrClient {
         const json = JSON.stringify(dto);
         
         this.log("Serialized workspace:");
-        this.log(dto);
+        this.log(json);
 
         var nonce = Date.now() + "";
         var md5Digest = this.getMD5digest(json);
