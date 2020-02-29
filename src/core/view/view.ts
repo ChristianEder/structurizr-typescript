@@ -127,6 +127,11 @@ export abstract class View {
 
     protected addElement(element: Element, addRelationships: boolean): void {
         if (element) {
+
+            if(this.elements.some(e => e.element === element)){
+                return;
+            }
+
             if (this.model.containsElement(element)) {
                 this.elements.push(new ElementView(element));
                 if (addRelationships) {
