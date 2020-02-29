@@ -6,6 +6,7 @@ export class StructurizrClient {
 
     private httpClient!: HttpClient;
     public mergeFromRemote = true;
+    public verbose = false;
 
     constructor(private apiKey: string, private apiSecret: string, private url = "api.structurizr.com") {
         this.httpClient = new HttpClient(url);
@@ -32,13 +33,20 @@ export class StructurizrClient {
     public async putWorkspace(workspaceId: number, workspace: Workspace): Promise<string> {
 
         if (this.mergeFromRemote) {
+            this.log("Starting to get remote workspace for layout merging");
             var remoteWorkspace = await this.getWorkspace(workspaceId);
+            this.log("Gott remote workspace for layout merging");
             workspace.views.copyLayoutInformationFrom(remoteWorkspace.views);
+            this.log("Merged layout with remote workspace");
         }
 
         workspace.id = workspaceId;
         workspace.lastModifiedDate = new Date();
-        var json = JSON.stringify(workspace.toDto());
+        const dto =workspace.toDto();
+        const json = JSON.stringify(dto);
+        
+        this.log("Serialized workspace:");
+        this.log(dto);
 
         var nonce = Date.now() + "";
         var md5Digest = this.getMD5digest(json);
@@ -83,5 +91,11 @@ export class StructurizrClient {
 
     private toBase64EncodedUTF8(text: string): string {
         return CryptoJS.enc.Utf8.parse(text).toString(CryptoJS.enc.Base64);
+    }
+
+    private log(message: any){
+        if(this.verbose){
+            console.log(message);
+        }
     }
 }
