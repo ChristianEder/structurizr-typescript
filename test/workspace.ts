@@ -1,4 +1,4 @@
-import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode } from "../src";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
     const workspace = new Workspace();
@@ -59,7 +59,7 @@ export const createWorkspace: () => Workspace = () => {
     const frontendComponentView = workspace.views.createComponentView(frontend, "factory-frontend-components", "Component View for the monkey factory frontend");
     frontendComponentView.addAllComponents();
     frontendComponentView.addNearestNeighbours(frontend);
-    frontendComponentView.setAutomaticLayout(true);
+    frontendComponentView.paperSize = PaperSize.A3_Portrait;
 
     const completeContainerView = workspace.views.createContainerView(factory, "factory-containers-all", "Container view for the monkey factory");
     completeContainerView.addAllContainers();
@@ -95,6 +95,8 @@ export const createWorkspace: () => Workspace = () => {
     workspace.documentation.addSection(undefined, "Unrelated", Format.AsciiDoc, `Text goes here`);
     workspace.documentation.addDecision(factory, '1', new Date('2008-09-15T15:53:00'), 'Use ISO 8601 Format for Dates', DecisionStatus.Accepted, Format.Markdown, `We should use ISO 8601`);
     workspace.documentation.addDecision(undefined, '2', new Date('2008-09-15T15:53:00'), 'Use angular as the frontend framework', DecisionStatus.Proposed, Format.Markdown, `We should use angular`);
+
+    workspace.views.configuration.terminology.person = "Actor";
 
     return workspace;
 }

@@ -15,11 +15,11 @@ This GitHub repository is a port of [Structurizr for .NET](https://github.com/st
   > npm install -S structurizr-typescript
 - Start coding your architecture model similar to the [sample index.ts](https://github.com/ChristianEder/structurizr-typescript/blob/master/sample/index.ts)
   - For more detailed documentation on how to use Structurizr, please refer to [Structurizr for .NET](https://github.com/structurizr/dotnet) - the usage is pretty much the same
-  - In the current version of this package, just a few of Structurizrs features are already implemented. See [Limitations](#Limitations) section below
+  - In the current version of this package, not all of Structurizrs features are already implemented. See [Limitations](#Limitations) section below
 
 ## Limitations
 
-The current version of this package only supports:
+The current version of this package supports:
 - Person, SoftwareSystem, Container, Component & CodeElement entities
 - Relationships between those entities 
 - System Context, Container & Component diagrams
@@ -28,10 +28,12 @@ The current version of this package only supports:
 - Custom Element & Relationship styles, usage & export of themes
 - Documentation Sections & Decisions (kudos go to [Joe Ruello](https://github.com/joeruello))
 - Diagram Autolayouting (kudos go to [Joe Ruello](https://github.com/joeruello))
+- Diagram paper size settings
+- Custom Branding & Terminology
 
 This specifically excludes:
 - Encrypted workspaces
 - Dynamic diagrams 
 - Enterprise context diagrams
 
-Also, as of now the package has just a few automated tests - use at own risk :-)
+Also, as of now the package has just a few automated tests - use at own risk :-). Let me know if you encounter any issues, I am happy to provide a fix.
