@@ -1,4 +1,4 @@
-import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize } from "../src";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize, SoftwareSystem } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
     const workspace = new Workspace();
@@ -97,6 +97,19 @@ export const createWorkspace: () => Workspace = () => {
     workspace.documentation.addDecision(undefined, '2', new Date('2008-09-15T15:53:00'), 'Use angular as the frontend framework', DecisionStatus.Proposed, Format.Markdown, `We should use angular`);
 
     workspace.views.configuration.terminology.person = "Actor";
+
+    return workspace;
+}
+
+export const createWorkspaceWithSoftwareSystemNameOfMoreThanTwoWords: () => Workspace = () => {
+    const workspace: Workspace = new Workspace();
+    workspace.name = "GPS tracking system";
+    const gpsTrackingSystem: SoftwareSystem = workspace.model.addSoftwareSystem("GPS tracking system", "Ingests, processes and visualizes GPS tracking data") as SoftwareSystem;
+    gpsTrackingSystem.location = Location.Internal;
+    
+    const containerView = workspace.views.createContainerView(gpsTrackingSystem, "gps-tracking-system-containers", "Container view for the GPS tracking system");
+    containerView.addAllContainers();
+    containerView.addNearestNeighbours(gpsTrackingSystem);
 
     return workspace;
 }

@@ -1,6 +1,6 @@
 import { describe, it } from "mocha";
 import { testApiCompatitbility, testApiIdempotency } from "./api-compatibility";
-import { testPlantUMLWriter } from "./plantUMLWriter";
+import { testPlantUMLWriter, testPlantUMLWriterIsAbleToHandleProperlyPackageNameWithMultipleWords } from "./plantUMLWriter";
 import { testElementStyleThemeExport, testFullThemeExport } from "./themeExport";
 import * as  deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import * as chai from "chai";
@@ -17,6 +17,10 @@ describe("structurizr-typescript", () => {
     describe("client", () => {
         describe("plantUML", () => {
             it("export plant UML diagrams correctly", testPlantUMLWriter);
+            it(
+                "handles long system names properly when exporting as package in container view",
+                testPlantUMLWriterIsAbleToHandleProperlyPackageNameWithMultipleWords
+              );
         })
     });
 
