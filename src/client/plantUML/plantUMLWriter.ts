@@ -169,7 +169,7 @@ export class PlantUMLWriter {
     }
 
     private nameOf(s: string): string {
-        return s ? s.replace(" ", "").replace("-", "") : "";
+        return s ? `"${s}"` : "";
     }
 
     private writeFooter(writer: StringWriter) {
