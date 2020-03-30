@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { PlantUMLWriter, Workspace, Location, SoftwareSystem } from "../src";
+import { PlantUMLWriter, Workspace } from "../src";
 import { createWorkspace, createWorkspaceWithSoftwareSystemNameOfMoreThanTwoWords } from "./workspace";
 
 export function testPlantUMLWriter() {

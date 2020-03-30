@@ -104,12 +104,12 @@ export const createWorkspace: () => Workspace = () => {
 export const createWorkspaceWithSoftwareSystemNameOfMoreThanTwoWords: () => Workspace = () => {
     const workspace: Workspace = new Workspace();
     workspace.name = "GPS tracking system";
-    const GPSTrackingSystem: SoftwareSystem = workspace.model.addSoftwareSystem("GPS tracking system", "Ingests, processes and visualizes GPS tracking data") as SoftwareSystem;
-    GPSTrackingSystem.location = Location.Internal;
+    const gpsTrackingSystem: SoftwareSystem = workspace.model.addSoftwareSystem("GPS tracking system", "Ingests, processes and visualizes GPS tracking data") as SoftwareSystem;
+    gpsTrackingSystem.location = Location.Internal;
     
-    const containerView = workspace.views.createContainerView(GPSTrackingSystem, "gps-tracking-system-containers", "Container view for the GPS tracking system");
+    const containerView = workspace.views.createContainerView(gpsTrackingSystem, "gps-tracking-system-containers", "Container view for the GPS tracking system");
     containerView.addAllContainers();
-    containerView.addNearestNeighbours(GPSTrackingSystem);
+    containerView.addNearestNeighbours(gpsTrackingSystem);
 
     return workspace;
 }
