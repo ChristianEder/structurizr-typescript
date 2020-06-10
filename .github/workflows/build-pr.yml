@@ -20,3 +20,6 @@ jobs:
         STRUCTURIZR_WORKSPACE_ID: ${{secrets.STRUCTURIZR_WORKSPACE_ID}}
         STRUCTURIZR_API_KEY: ${{secrets.STRUCTURIZR_API_KEY}}
         STRUCTURIZR_API_SECRET: ${{secrets.STRUCTURIZR_API_SECRET}}
+    - name: sample build
+      run: cd sample && npm i && npm run build
+
