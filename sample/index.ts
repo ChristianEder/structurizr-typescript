@@ -34,8 +34,8 @@ containerView.addAllContainers();
 containerView.addNearestNeighbours(factory);
 
 // Now either write the workspace to the Structurizr backend...
-var yourWorkspaceId = 324324;
-var client = new StructurizrClient("<your api key>", "<your api secret>");
+var yourWorkspaceId = parseInt(process.env.STRUCTURIZR_WORKSPACE_ID!);
+var client = new StructurizrClient(process.env.STRUCTURIZR_API_KEY!, process.env.STRUCTURIZR_API_SECRET!);
 client.putWorkspace(yourWorkspaceId, workspace).then((c) => {
     console.log("done", c);
 }).catch(e => {
