@@ -71,9 +71,9 @@ const pushWorkspace = (workspace) => {
   return client.putWorkspace(workspaceId, workspace)
 }
 
-const renderUML = (workspace) => {
+const renderUML = (location, workspace) => {
   const plantUML = new PlantUMLWriter().toPlantUML(workspace)
-  fs.writeFileSync('plant.puml', plantUML)
+  fs.writeFileSync(location, plantUML)
 }
 
 const main = async () => {
@@ -86,8 +86,9 @@ const main = async () => {
   }
 
   // ... or render it as PlantUML
-  renderUML(workspace)
-  console.log('> workspace rendered as UML')
+  const location = 'plant.puml'
+  renderUML(location, workspace)
+  console.log('> workspace rendered as UML at', location)
 }
 
 main().catch((e) => console.error('error', e))
