@@ -1,8 +1,7 @@
-import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize, SoftwareSystem } from "../src";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize, SoftwareSystem, Role } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
-    const workspace = new Workspace();
-    workspace.name = "Monkey Factory - Test";
+    const workspace = new Workspace("Monkey Factory - Test", "Description");
 
     const user = workspace.model.addPerson("User", "uses the system")!;
 
@@ -98,12 +97,14 @@ export const createWorkspace: () => Workspace = () => {
 
     workspace.views.configuration.terminology.person = "Actor";
 
+    workspace.configuration.addUser("nouser@nodomain", Role.ReadOnly);
+
     return workspace;
 }
 
 export const createWorkspaceWithSoftwareSystemNameOfMoreThanTwoWords: () => Workspace = () => {
-    const workspace: Workspace = new Workspace();
-    workspace.name = "GPS tracking system";
+    const workspace: Workspace = new Workspace("GPS tracking system", "Description");
+
     const gpsTrackingSystem: SoftwareSystem = workspace.model.addSoftwareSystem("GPS tracking system", "Ingests, processes and visualizes GPS tracking data") as SoftwareSystem;
     gpsTrackingSystem.location = Location.Internal;
     
