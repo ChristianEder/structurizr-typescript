@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "mocha --require ts-node/register test/index.ts"
+    "test": "ts-mocha -p tsconfig.json test/index.ts"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
     "deep-equal-in-any-order": "1.0.21",
     "@types/deep-equal-in-any-order": "1.0.1",
     "mocha": "8.1.3",
-    "ts-node": "8.3.0",
+    "ts-mocha": "7.0.0",
     "typescript": "3.7.3"
   },
   "dependencies": {
