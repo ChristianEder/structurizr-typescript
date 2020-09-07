@@ -23,7 +23,7 @@ export class StructurizrClient {
                 throw new Error("Response from API seems to indicate an error: " + j);
             }
 
-            var w = new Workspace();
+            var w = new Workspace("", "");
             w.fromDto(JSON.parse(j));
             w.hydrate();
             return w;
