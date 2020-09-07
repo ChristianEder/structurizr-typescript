@@ -1,4 +1,4 @@
-import { Workspace, SystemContextView, ContainerView, DeploymentView, View, Element, RelationshipView, Person, SoftwareSystem, Container, Relationship } from "../../core";
+import { Workspace, SystemContextView, ContainerView, DeploymentView, View, Element, RelationshipView, Person, SoftwareSystem, Container, Relationship, ComponentView, Component, StaticView, StaticStructureElement } from "../../core";
 import { DeploymentNode } from "../../core/model/deploymentNode";
 import { ContainerInstance } from "../../core/model/containerInstance";
 
@@ -34,6 +34,9 @@ export class PlantUMLWriter {
             workspace.views.containerViews.forEach(v => {
                 this.writeContainerView(v, result);
             });
+            workspace.views.componentViews.forEach(v => {
+                this.writeComponentView(v, result);
+            });
             workspace.views.deploymentViews.forEach(v => {
                 this.writeDeploymentView(v, result);
             });
@@ -56,21 +59,29 @@ export class PlantUMLWriter {
     }
 
     private writeContainerView(v: ContainerView, writer: StringWriter) {
+        this.writeStaticView(v, Container.type, v.softwareSystem!, writer);
+    }
+
+    private writeComponentView(v: ComponentView, writer: StringWriter) {
+        this.writeStaticView(v, Component.type, v.container!, writer);
+    }
+
+    private writeStaticView(v: StaticView, type: string, element: StaticStructureElement, writer: StringWriter){
         this.writeHeader(v, writer);
 
         v.elements
             .map(e => e.element)
-            .filter(e => e.type !== Container.type)
+            .filter(e => e.type !== type)
             .sort(this.by(e => e.name))
             .forEach(e => this.writeElement(e, writer, false));
 
-        writer.writeLine("package " + this.nameOf(v.softwareSystem!.name) + " {");
+        writer.writeLine("package " + this.nameOf(element!.name) + " {");
 
         v.elements
-            .map(e => e.element)
-            .filter(e => e.type === Container.type)
-            .sort(this.by(e => e.name))
-            .forEach(e => this.writeElement(e, writer, true));
+        .map(e => e.element)
+        .filter(e => e.type === type)
+        .sort(this.by(e => e.name))
+        .forEach(e => this.writeElement(e, writer, true));
 
         writer.writeLine("}");
 
@@ -94,14 +105,14 @@ export class PlantUMLWriter {
     }
 
     private writeDeploymentNode(e: DeploymentNode, writer: StringWriter, indent: number): void {
-        
+
         writer.writeLine(`${"  ".repeat(indent)}node \"${e.name + (e.instances > 1 ? " (x" + e.instances + ")" : "")}\" <<${this.typeOf(e)}>> as ${e.id} {`);
-       
+
         e.children.forEach(d => this.writeDeploymentNode(d, writer, indent + 1));
 
         e.containerInstances.forEach(i => this.writeContainerInstance(i, writer, indent + 1));
 
-        writer.writeLine("  ".repeat(indent) +  "}");
+        writer.writeLine("  ".repeat(indent) + "}");
     }
 
     private writeContainerInstance(i: ContainerInstance, writer: StringWriter, indent: number): void {
