@@ -4,10 +4,11 @@ import { Documentation } from "../documentation/documentation";
 
 export abstract class AbstractWorkspace {
     public id!: number;
-    public name: string = "";
-    public description: string = "";
     public lastModifiedDate!: Date;
     public version!: string;
+
+    constructor(public name: string, public description: string){
+    }
 
     public toDto(): any {
         return {
