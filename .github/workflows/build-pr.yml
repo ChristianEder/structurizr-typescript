@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js 8.11.3
+    - name: Use Node.js 14.4.0
       uses: actions/setup-node@v1
       with:
-        node-version: 8.11.3
+        node-version: 14.4.0
         registry-url: https://registry.npmjs.org/
     - name: npm install
       run: npm i
