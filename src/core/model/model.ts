@@ -92,6 +92,7 @@ export class Model {
             relationship.id = this._idGenerator.generateId(relationship);
             source.relationships.add(relationship);
             this.addRelationshipToInternalStructures(relationship);
+            return relationship;
         }
 
         return null;
