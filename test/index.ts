@@ -4,6 +4,7 @@ import { testPlantUMLWriter, testPlantUMLWriterIsAbleToHandleProperlyPackageName
 import { testElementStyleThemeExport, testFullThemeExport } from "./themeExport";
 import * as  deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import * as chai from "chai";
+import { regression } from "./regression";
 chai.use(deepEqualInAnyOrder);
 
 
@@ -30,4 +31,6 @@ describe("structurizr-typescript", () => {
             it("should export element and relationship styles", testFullThemeExport);
         });
     });
+
+    describe("regression", regression);
 });

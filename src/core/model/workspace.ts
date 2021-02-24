@@ -1,13 +1,15 @@
 import { Model } from "./model";
 import { ViewSet } from "../view/viewSet";
 import { Documentation } from "../documentation/documentation";
+import { WorkspaceConfiguration } from "./workspaceConfiguration";
 
 export abstract class AbstractWorkspace {
     public id!: number;
     public lastModifiedDate!: Date;
     public version!: string;
+    public configuration = new WorkspaceConfiguration();
 
-    constructor(public name: string, public description: string){
+    constructor(public name: string, public description: string) {
     }
 
     public toDto(): any {
@@ -22,9 +24,7 @@ export abstract class AbstractWorkspace {
                 decisions: [],
                 images: []
             },
-            configuration: {
-                users: []
-            }
+            configuration: this.configuration.toDto()
         };
     }
 
@@ -34,6 +34,7 @@ export abstract class AbstractWorkspace {
         this.description = dto.description;
         this.lastModifiedDate = dto.lastModifiedDate;
         this.version = dto.version;
+        this.configuration.fromDto(dto.configuration)
     }
 }
 

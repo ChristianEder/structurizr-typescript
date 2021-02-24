@@ -14,10 +14,13 @@ export * from "./model/modelItem";
 export * from "./model/person";
 export * from "./model/relationship";
 export * from "./model/relationships";
+export * from "./model/role";
 export * from "./model/softwareSystem";
 export * from "./model/staticStructureElement";
 export * from "./model/tags";
+export * from "./model/user";
 export * from "./model/workspace";
+export * from "./model/workspaceConfiguration";
 
 export * from "./view/automaticLayout";
 export * from "./view/branding";
