@@ -17,6 +17,10 @@ export class Tags {
     constructor(private _owner: ModelItem) {
     }
 
+    public asArray(): string[] {
+       return [...this._all];
+    }
+
     public add(tag: string): void {
         this._all.push(tag);
     }

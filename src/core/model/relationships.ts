@@ -22,16 +22,21 @@ export class Relationships {
         return this.owner.model.hasRelationshipTargeting(this.owner);
     }
 
-    public getEfferentRelationshipWith(element: Element): Relationship | null {
+    public getEfferentRelationshipWith(element: Element, description?: string): Relationship | null {
         if (!element) {
             return null;
         }
 
-        var relationship = this._all.filter(r => r.destination.equals(element));
+        let relationship = this._all.filter(r => r.destination.equals(element));
+
+        if (description) {
+            relationship = relationship.filter(r => r.description === description);
+        }
 
         if (relationship.length) {
             return relationship[0];
         }
+        
         return null;
     }
 
