@@ -9,6 +9,9 @@ import { Container } from "./container";
 import { DeploymentNode } from "./deploymentNode";
 import { ContainerInstance } from "./containerInstance";
 import { Component } from "./component";
+import { isChildOf } from "./isChildOf";
+import { DefaultImpliedRelationshipsStrategy } from "./defaultImpliedRelationshipsStrategy";
+import { IImpliedRelationshipsStrategy } from "./impliedRelationshipsStrategy";
 
 export class Model {
     public relationships: Relationship[] = [];
@@ -17,6 +20,7 @@ export class Model {
     public softwareSystems: SoftwareSystem[] = [];
     public containerInstances: ContainerInstance[] = [];
     public deploymentNodes: DeploymentNode[] = [];
+    public impliedRelationshipsStrategy: IImpliedRelationshipsStrategy = new DefaultImpliedRelationshipsStrategy();
     private _elementsById: { [id: string]: Element } = {};
 
     public toDto(): any {
@@ -85,13 +89,29 @@ export class Model {
         return this.getElement(element.id) == element;
     }
 
-    public addRelationship(source: Element, destination: Element, description: string, technology?: string, interactionStyle = InteractionStyle.Synchronous): Relationship | null {
+    public addRelationship(source: Element, destination: Element, description: string, technology?: string, interactionStyle = InteractionStyle.Synchronous, createImpliedRelationships = true): Relationship | null {
         var relationship = new Relationship(source, destination, description, technology, interactionStyle);
+
+        if (isChildOf(source, destination) || isChildOf(destination, source)) {
+            throw 'Relationships cannot be added between parents and children.';
+        }
 
         if (!source.relationships.has(relationship)) {
             relationship.id = this._idGenerator.generateId(relationship);
             source.relationships.add(relationship);
             this.addRelationshipToInternalStructures(relationship);
+
+            if (createImpliedRelationships) {
+                if
+                    (
+                    (source.type === Person.type || source.type === SoftwareSystem.type || source.type === Container.type || source.type === Component.type) &&
+                        (destination.type === Person.type || destination.type === SoftwareSystem.type || destination.type === Container.type || destination.type === Component.type)
+                    )
+                {
+                    this.impliedRelationshipsStrategy.createImpliedRelationships(relationship);
+                }
+            }
+
             return relationship;
         }
 

@@ -5,6 +5,8 @@ import { testElementStyleThemeExport, testFullThemeExport } from "./themeExport"
 import * as  deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import * as chai from "chai";
 import { regression } from "./regression";
+import { implicitRelationships } from "./implicitRelationships";
+import { delivers } from "./delivers";
 chai.use(deepEqualInAnyOrder);
 
 
@@ -21,7 +23,7 @@ describe("structurizr-typescript", () => {
             it(
                 "handles long system names properly when exporting as package in container view",
                 testPlantUMLWriterIsAbleToHandleProperlyPackageNameWithMultipleWords
-              );
+            );
         })
     });
 
@@ -33,4 +35,8 @@ describe("structurizr-typescript", () => {
     });
 
     describe("regression", regression);
+
+    describe("implicitRelationships", implicitRelationships);
+
+    describe("delivers", delivers);
 });

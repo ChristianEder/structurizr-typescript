@@ -28,6 +28,10 @@ export class Person extends StaticStructureElement implements IEquatable<Person>
         return this.model.addRelationship(this, destination, description, technology, interactionStyle);
     }
 
+    public delivers(destination: Person, description: string, technology?: string, interactionStyle? : InteractionStyle): Relationship | null {
+        throw "Person cannot be the source of 'delivers' relations";
+    }
+
     public toDto() {
         var dto = super.toDto();
         dto.location = this.location;
