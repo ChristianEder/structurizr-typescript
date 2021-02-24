@@ -6,6 +6,7 @@ import * as  deepEqualInAnyOrder from 'deep-equal-in-any-order';
 import * as chai from "chai";
 import { regression } from "./regression";
 import { implicitRelationships } from "./implicitRelationships";
+import { delivers } from "./delivers";
 chai.use(deepEqualInAnyOrder);
 
 
@@ -36,4 +37,6 @@ describe("structurizr-typescript", () => {
     describe("regression", regression);
 
     describe("implicitRelationships", implicitRelationships);
+
+    describe("delivers", delivers);
 });
