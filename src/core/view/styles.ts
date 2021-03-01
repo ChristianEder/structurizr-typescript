@@ -63,6 +63,7 @@ export interface IElementStyle {
     height?: number;
     background?: string;
     color?: string;
+    stroke?: string;
     fontSize?: number;
     shape?: Shape;
     icon?: string;
@@ -77,6 +78,7 @@ export class ElementStyle implements IElementStyle {
     public height?: number;
     public background?: string;
     public color?: string;
+    public stroke?: string;
     public fontSize?: number;
     public shape?: Shape;
     public icon?: string;
