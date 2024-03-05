@@ -1,6 +1,6 @@
 import { Model } from "../model/model";
 import { Element } from "../model/element";
-import * as assert from "assert";
+import assert = require('assert');
 import { Section } from "./section";
 import { Decision } from "./decision";
 import { SoftwareSystem } from "../model/softwareSystem";

@@ -34,8 +34,8 @@ export const implicitRelationships = () => {
 
             const implicitRelation = factory.relationships.getEfferentRelationshipWith(crm);
             expect(implicitRelation).not.to.be.null;
-            expect(implicitRelation.description).to.equal("Get customer data");
-            expect(implicitRelation.technology).to.equal("HTTP");
+            expect(implicitRelation?.description).to.equal("Get customer data");
+            expect(implicitRelation?.technology).to.equal("HTTP");
         });
 
         it("should not add implicit relation if any relationship exists ", () => {
@@ -50,8 +50,8 @@ export const implicitRelationships = () => {
 
             const explicitRelation = factory.relationships.getEfferentRelationshipWith(crm, "Load customer data");
             expect(explicitRelation).not.to.be.null;
-            expect(explicitRelation.description).to.equal("Load customer data");
-            expect(explicitRelation.technology).to.be.undefined;
+            expect(explicitRelation?.description).to.equal("Load customer data");
+            expect(explicitRelation?.technology).to.be.undefined;
             
             const implicitRelation = factory.relationships.getEfferentRelationshipWith(crm, "Get customer data");
             expect(implicitRelation).to.be.null;
@@ -72,8 +72,8 @@ export const implicitRelationships = () => {
 
             const implicitRelation = factory.relationships.getEfferentRelationshipWith(crm);
             expect(implicitRelation).not.to.be.null;
-            expect(implicitRelation.description).to.equal("Get customer data");
-            expect(implicitRelation.technology).to.equal("HTTP");
+            expect(implicitRelation?.description).to.equal("Get customer data");
+            expect(implicitRelation?.technology).to.equal("HTTP");
         });
 
         it("should add implicit relation if other relationship exists ", () => {
@@ -88,13 +88,13 @@ export const implicitRelationships = () => {
 
             const explicitRelation = factory.relationships.getEfferentRelationshipWith(crm, "Load customer data");
             expect(explicitRelation).not.to.be.null;
-            expect(explicitRelation.description).to.equal("Load customer data");
-            expect(explicitRelation.technology).to.be.undefined;
+            expect(explicitRelation?.description).to.equal("Load customer data");
+            expect(explicitRelation?.technology).to.be.undefined;
             
             const implicitRelation = factory.relationships.getEfferentRelationshipWith(crm, "Get customer data");
             expect(implicitRelation).not.to.be.null;
-            expect(implicitRelation.description).to.equal("Get customer data");
-            expect(implicitRelation.technology).to.equal("HTTP");
+            expect(implicitRelation?.description).to.equal("Get customer data");
+            expect(implicitRelation?.technology).to.equal("HTTP");
         });
 
         it("should not add implicit relation if same relationship exists ", () => {
@@ -109,8 +109,8 @@ export const implicitRelationships = () => {
 
             const explicitRelation = factory.relationships.getEfferentRelationshipWith(crm, "Get customer data");
             expect(explicitRelation).not.to.be.null;
-            expect(explicitRelation.description).to.equal("Get customer data");
-            expect(explicitRelation.technology).to.be.undefined;
+            expect(explicitRelation?.description).to.equal("Get customer data");
+            expect(explicitRelation?.technology).to.be.undefined;
         });
 
     });
