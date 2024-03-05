@@ -10,6 +10,7 @@ export class FilteredView {
     public baseViewKey: string;
     public baseView?: View;
     public key: string;
+    public order?: number;
     public description: string;
     public mode: FilterMode;
     public tags: string[];
@@ -26,6 +27,7 @@ export class FilteredView {
     public toDto(): any {
         return {
             key: this.key,
+            order: this.order,
             description: this.description,
             mode: this.mode,
             tags: this.tags,
@@ -35,6 +37,7 @@ export class FilteredView {
 
     public fromDto(dto: any): void {
         this.key = dto.key;
+        this.order = dto.order;
         this.description = dto.description;
         this.mode = dto.mode;
         this.tags = dto.tags;

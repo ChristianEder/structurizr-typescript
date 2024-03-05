@@ -1,11 +1,12 @@
 import { View } from "./view";
 import { Model } from "../model/model";
 import { DeploymentNode } from "../model/deploymentNode";
+import { ContainerInstance } from "../model/containerInstance";
 
 export class DeploymentView extends View {
 
     private _model!: Model;
-    
+
     public get model(): Model {
         return this._model;
     }
@@ -21,7 +22,7 @@ export class DeploymentView extends View {
         return dto;
     }
 
-    public fromDto(dto:any){
+    public fromDto(dto: any) {
         super.fromDto(dto);
         this.environment = dto.environment;
     }
@@ -42,6 +43,25 @@ export class DeploymentView extends View {
                 parent = parent.parent;
             }
         }
+    }
+
+    public addContainerInstance(containerInstance: ContainerInstance) {
+        this.addElement(containerInstance, true);
+        let parent = containerInstance.parent as DeploymentNode;
+        while (parent != null) {
+            this.addElement(parent, true);
+            parent = parent.parent as DeploymentNode;
+        }
+    }
+
+    public removeDeploymentNode(deploymentNode: DeploymentNode) { 
+        deploymentNode.containerInstances.forEach(c => this.removeContainerInstance(c));
+        deploymentNode.children.forEach(c => this.removeDeploymentNode(c));
+        this.removeElement(deploymentNode);
+    }
+
+    public removeContainerInstance(containerInstance: ContainerInstance) {
+        this.removeElement(containerInstance);
     }
 
     private addContainerInstancesAndDeploymentNodes(deploymentNode: DeploymentNode): boolean {

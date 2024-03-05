@@ -1,4 +1,4 @@
-import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize, SoftwareSystem, Role } from "../src";
+import { Workspace, Location, InteractionStyle, ElementStyle, RelationshipStyle, Shape, Tags, Format, DecisionStatus, RankDirection, FilterMode, PaperSize, SoftwareSystem, Role, WorkspaceScope } from "../src";
 
 export const createWorkspace: () => Workspace = () => {
     const workspace = new Workspace("Monkey Factory - Test", "Description");
@@ -60,13 +60,13 @@ export const createWorkspace: () => Workspace = () => {
     frontendComponentView.addNearestNeighbours(frontend);
     frontendComponentView.paperSize = PaperSize.A3_Portrait;
 
-    const completeContainerView = workspace.views.createContainerView(factory, "factory-containers-all", "Container view for the monkey factory");
-    completeContainerView.addAllContainers();
-    completeContainerView.addNearestNeighbours(factory);
-    completeContainerView.setAutomaticLayout(RankDirection.LeftRight, 100, 200, 100, true);
+    const containerViewForFiltering = workspace.views.createContainerView(factory, "factory-containers-filtering", "Container view for the monkey factory");
+    containerView.addAllContainers();
+    containerView.addNearestNeighbours(factory);
+    containerView.setAutomaticLayout(RankDirection.LeftRight, 100, 200, 100, true);
 
-    workspace.views.createFilteredView(completeContainerView, "databases", "Shows all databases", FilterMode.Include, "database");
-    workspace.views.createFilteredView(completeContainerView, "people", "Shows all people", FilterMode.Include, Tags.Person);
+    workspace.views.createFilteredView(containerViewForFiltering, "databases", "Shows all databases", FilterMode.Include, "database");
+    workspace.views.createFilteredView(containerViewForFiltering, "people", "Shows all people", FilterMode.Include, Tags.Person);
 
     const deploymentView = workspace.views.createDeploymentView("factory-deployment", "The deployment view fo the monkey factory", factory);
     deploymentView.addAllDeploymentNodes();
@@ -87,7 +87,7 @@ export const createWorkspace: () => Workspace = () => {
     workspace.views.configuration.styles.addElementStyle(queueStyle);
     workspace.views.configuration.styles.addRelationshipStyle(asyncStyle);
     workspace.views.configuration.styles.addRelationshipStyle(syncStyle);
-    workspace.views.configuration.theme = "https://raw.githubusercontent.com/structurizr/java/master/structurizr-examples/src/com/structurizr/example/theme/theme.json";
+    workspace.views.configuration.theme = "https://static.structurizr.com/themes/microsoft-azure-2023.01.24/theme.json";
 
     workspace.documentation.addSection(factory, "Monkey Factory", Format.Markdown, `The monkey factory oversees the production of stuffed monkey animals`);
     workspace.documentation.addSection(frontend, "Frontend", Format.AsciiDoc, `The frontend is written in javascript`);
@@ -98,6 +98,8 @@ export const createWorkspace: () => Workspace = () => {
     workspace.views.configuration.terminology.person = "Actor";
 
     workspace.configuration.addUser("nouser@nodomain", Role.ReadOnly);
+
+    workspace.configuration.scope = WorkspaceScope.SoftwareSystem;
 
     return workspace;
 }

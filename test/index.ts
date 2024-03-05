@@ -1,13 +1,13 @@
 import { describe, it } from "mocha";
+import { use } from 'chai';
 import { testApiCompatitbility, testApiIdempotency } from "./api-compatibility";
 import { testPlantUMLWriter, testPlantUMLWriterIsAbleToHandleProperlyPackageNameWithMultipleWords } from "./plantUMLWriter";
 import { testElementStyleThemeExport, testFullThemeExport } from "./themeExport";
-import * as  deepEqualInAnyOrder from 'deep-equal-in-any-order';
-import * as chai from "chai";
+import { default as deepEqualInAnyOrder } from 'deep-equal-in-any-order';
 import { regression } from "./regression";
 import { implicitRelationships } from "./implicitRelationships";
 import { delivers } from "./delivers";
-chai.use(deepEqualInAnyOrder);
+use(deepEqualInAnyOrder);
 
 
 describe("structurizr-typescript", () => {

@@ -18,6 +18,7 @@ export abstract class View {
     public relationships: RelationshipView[] = [];
     public automaticLayout?: AutomaticLayout;
     public paperSize?: PaperSize;
+    public order?: number;
 
     public get model(): Model {
         return this.softwareSystem!.model;
@@ -39,6 +40,7 @@ export abstract class View {
     public toDto(): any {
         return {
             key: this.key,
+            order: this.order,
             description: this.description,
             softwareSystemId: this.softwareSystemId,
             title: this.title,
@@ -51,6 +53,7 @@ export abstract class View {
 
     public fromDto(dto: any): void {
         this.key = dto.key;
+        this.order = dto.order;
         this.description = dto.description;
         this.softwareSystemId = dto.softwareSystemId;
         this.title = dto.title;
