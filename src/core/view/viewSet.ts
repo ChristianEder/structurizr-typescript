@@ -25,6 +25,7 @@ export class ViewSet {
     public createSystemContextView(softwareSystem: SoftwareSystem, key: string, description: string): SystemContextView {
         this.assertThatTheViewKeyIsUnique(key);
         var view = new SystemContextView(softwareSystem, key, description);
+        view.order = this.getNextOrder();
         this.systemContextViews.push(view);
         return view;
     }
@@ -32,6 +33,7 @@ export class ViewSet {
     public createContainerView(softwareSystem: SoftwareSystem, key: string, description: string): ContainerView {
         this.assertThatTheViewKeyIsUnique(key);
         var view = new ContainerView(softwareSystem, key, description);
+        view.order = this.getNextOrder();
         this.containerViews.push(view);
         return view;
     }
@@ -39,6 +41,7 @@ export class ViewSet {
     public createComponentView(container: Container, key: string, description: string): ComponentView {
         this.assertThatTheViewKeyIsUnique(key);
         var view = new ComponentView(container, key, description);
+        view.order = this.getNextOrder();
         this.componentViews.push(view);
         return view;
     }
@@ -46,6 +49,7 @@ export class ViewSet {
     public createDeploymentView(key: string, description: string, softwareSystem?: SoftwareSystem): DeploymentView {
         this.assertThatTheViewKeyIsUnique(key);
         var view = new DeploymentView(softwareSystem, key, description);
+        view.order = this.getNextOrder();
         view.model = this.model;
         this.deploymentViews.push(view);
         return view;
@@ -55,6 +59,7 @@ export class ViewSet {
         this.assertThatTheViewKeyIsUnique(key);
 
         const filteredView = new FilteredView(view, key, description, mode, ...tags);
+        filteredView.order = this.getNextOrder();
         this.filteredViews.push(filteredView);
 
         return filteredView;
@@ -175,5 +180,22 @@ export class ViewSet {
             view.fromDto(viewDto);
             return view;
         });
+    }
+
+    private getNextOrder(): number {
+        let maxOrder = 0;
+        [
+            ...this.systemContextViews,
+            ...this.containerViews,
+            ...this.componentViews,
+            ...this.deploymentViews,
+            ...this.filteredViews
+        ].forEach(v => {
+            if (v.order && v.order > maxOrder) {
+                maxOrder = v.order;
+            }
+        })
+
+        return maxOrder + 1;
     }
 }
