@@ -2,6 +2,7 @@ import { Tags } from "./tags";
 
 export abstract class ModelItem {
     public id!: string;
+    public properties!: Record<string, string>;
 
     private _tags: Tags = new Tags(this);
     public get tags(): Tags {
@@ -12,12 +13,13 @@ export abstract class ModelItem {
         return {
             id: this.id,
             tags: this.tags.toDto(),
-            properties: {}
+            properties: this.properties
         }
     }
 
     public fromDto(dto: any) {
         this.id = dto.id;
+        this.properties = dto.properties ?? {};
         this.tags.fromDto(dto.tags);
     }
 
