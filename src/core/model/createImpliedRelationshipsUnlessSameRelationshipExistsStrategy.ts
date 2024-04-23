@@ -15,7 +15,10 @@ export class CreateImpliedRelationshipsUnlessSameRelationshipExistsStrategy exte
 
                     if (createRelationship) {
                         const newRelationship = model.addRelationship(source, destination, relationship.description, relationship.technology, relationship.interactionStlye, false)!;
-                        relationship.tags.asArray().forEach(t => newRelationship.tags.add(t));
+                       
+                        if(newRelationship){
+                            newRelationship.linkedRelationshipId = relationship.id;
+                        }
                     }
                 }
 
