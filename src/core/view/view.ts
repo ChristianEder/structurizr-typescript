@@ -71,7 +71,7 @@ export abstract class View {
             this.automaticLayout = new AutomaticLayout();
             this.automaticLayout.fromDto(dto.automaticLayout);
         }
-        if(dto.paperSize){
+        if (dto.paperSize) {
             this.paperSize = PaperSize.getPaperSize(dto.paperSize);
         }
     }
@@ -103,7 +103,7 @@ export abstract class View {
     }
 
     public copyLayoutInformationFrom(source: View) {
-        if(!this.paperSize){
+        if (!this.paperSize) {
             this.paperSize = source.paperSize;
         }
 
@@ -138,10 +138,15 @@ export abstract class View {
         }
     }
 
+    public removeElements(condition: (e: Element) => boolean): void {
+        const remove = this.elements.filter(e => condition(e.element));
+        remove.forEach(e => this.removeElement(e.element));
+    }
+
     protected addElement(element: Element, addRelationships: boolean): void {
         if (element) {
 
-            if(this.elements.some(e => e.element === element)){
+            if (this.elements.some(e => e.element === element)) {
                 return;
             }
 

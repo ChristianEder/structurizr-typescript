@@ -26,9 +26,12 @@ export class ContainerView extends StaticView {
         this.addNearestNeighboursOfType(element, Container.type);
     }
 
-    public addContainer(container: Container)
-    {
+    public addContainer(container: Container) {
         this.addElement(container, true);
+    }
+
+    public removeContainers(condition: (c: Container) => boolean): void {
+        this.removeElements(e => e.type === Container.type && condition(e as Container));
     }
 
     protected addElement(element: Element, addRelationships: boolean): void {
